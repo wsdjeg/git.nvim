@@ -76,4 +76,8 @@ function M.run(cmdline)
   end
 end
 
+function M.complete(a, b, c)
+    
+end
+
 return M
