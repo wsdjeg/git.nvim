@@ -19,7 +19,14 @@ with [nvim-plug](https://github.com/wsdjeg/nvim-plug)
 
 ```lua
 require('plug').add({
-    { 'wsdjeg/git.nvim' }
+  {
+    'wsdjeg/git.nvim',
+    depends = {
+      { 'wsdjeg/job.nvim' },
+      { 'wsdjeg/notify.nvim' },
+      { 'wsdjeg/logger.nvim' },
+    },
+  },
 })
 ```
 
