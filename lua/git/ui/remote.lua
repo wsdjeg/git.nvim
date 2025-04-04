@@ -31,9 +31,8 @@ local help_info = {
   '" <CR>:    view git log',
   '" f:       fetch remote under cursor',
   '" o:       toggle display of branchs',
-  '" q:       close windows"'
+  '" q:       close windows"',
 }
-
 
 -- project_manager support
 
@@ -137,7 +136,9 @@ local function get_cursor_info()
   elseif vim.startswith(l, '        ') then
     local remote_line = vim.fn.search('^  ▼ ', 'bnW')
     if remote_line > 0 then
-      c.branch = string.gsub(string.sub(vim.fn.getline(remote_line), 7), updating_extra_text, '') .. '/' .. string.sub(l, 12)
+      c.branch = string.gsub(string.sub(vim.fn.getline(remote_line), 7), updating_extra_text, '')
+        .. '/'
+        .. string.sub(l, 12)
     end
   end
 
@@ -276,8 +277,11 @@ end
 
 function M.open()
   if not project_manager_registered then
-    require('spacevim.plugin.projectmanager').reg_callback(M.on_cwd_changed, 'git_remote_on_cwd_changed')
-    project_manager_registered = true
+    local ok, rt = pcall(require, 'rooter')
+    if ok then
+      rt.reg_callback(M.on_cwd_changed, 'git_remote_on_cwd_changed')
+      project_manager_registered = true
+    end
   end
   if bufnr ~= -1 and vim.api.nvim_buf_is_valid(bufnr) then
     vim.api.nvim_buf_delete(bufnr, {
@@ -315,7 +319,7 @@ function M.open()
     callback = fetch_remote,
   })
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
-    callback = function ()
+    callback = function()
       vim.cmd('quit')
       show_help_info = false
     end,
