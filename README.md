@@ -1,11 +1,12 @@
 # git.nvim
 
-> _git.nvim_ is a plugin to use _git_ command in neovim.
+git.nvim is a plugin to use git command in Neovim.
 
 <!-- vim-markdown-toc GFM -->
 
 * [Installation](#installation)
 * [Usage](#usage)
+* [Self-Promotion](#self-promotion)
 * [Feedback](#feedback)
 
 <!-- vim-markdown-toc -->
@@ -23,7 +24,7 @@ require('plug').add({
     depends = {
       { 'wsdjeg/job.nvim' },
       { 'wsdjeg/notify.nvim' },
-      { 'wsdjeg/logger.nvim' }, -- not strictly required 
+      { 'wsdjeg/logger.nvim' }, -- not strictly required
       { 'wsdjeg/rooter.nvim' }, -- not strictly required
     },
   },
@@ -48,6 +49,16 @@ Then use `:PlugInstall git.nvim` to install this plugin.
 - `:Git rebase`: rebase git commit
 - `:Git diff`: view git-diff info
 
+## Self-Promotion
+
+Like this plugin? Star the repository on
+GitHub.
+
+Love this plugin? Follow [me](https://wsdjeg.net/) on
+[GitHub](https://github.com/wsdjeg) and
+[Twitter](http://twitter.com/wsdtty).
+
 ## Feedback
 
+If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
 If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
