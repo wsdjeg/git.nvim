@@ -8,7 +8,7 @@
 
 local M = {}
 
-local job = require('spacevim.api.job')
+local job = require('job')
 local log = require('git.log')
 
 -- script local valuables

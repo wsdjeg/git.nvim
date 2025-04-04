@@ -6,7 +6,7 @@
 -- License: GPLv3
 --=============================================================================
 
-local job = require('spacevim.api.job')
+local job = require('job')
 
 local log = require('git.log')
 

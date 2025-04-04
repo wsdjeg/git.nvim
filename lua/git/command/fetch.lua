@@ -8,8 +8,8 @@
 
 local M = {}
 
-local job = require('spacevim.api.job')
-local nt = require('spacevim.api.notify')
+local job = require('job')
+local nt = require('notify')
 local log = require('git.log')
 local stddata = {}
 
