@@ -81,8 +81,6 @@ function M.complete(ArgLead, CmdLine, CursorPos)
 
   local command = vim.fn.split(CmdLine)[2]
 
-  log.info('command is:' .. command)
-
   local ok, cmd = pcall(require, 'git.command.' .. command)
   if ok and type(cmd.complete) == 'function' then
     return cmd.complete(ArgLead, CmdLine, CursorPos)
