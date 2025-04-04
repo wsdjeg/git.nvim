@@ -78,8 +78,8 @@ end
 
 function M.complete(ArgLead, CmdLine, CursorPos)
     local str = string.sub(CmdLine, 1, CursorPos)
-    if vim.regex([[^Git\s\+[a-zA-Z]*$']]):match_str(str) then
-        return cmds
+    if vim.regex([[^Git\s\+[a-zA-Z]*$]]):match_str(str) then
+        return table.concat(cmds, '\n')
     end
 
 end
