@@ -77,7 +77,18 @@ function M.run(cmdline)
 end
 
 function M.complete(a, b, c)
-    
+  local argv = util.parser(b)
+
+  local command = table.remove(argv, 1)
+
+  local ok, cmd = pcall(require, 'git.command.' .. command)
+  if ok then
+    if type(cmd.complete) == 'function' then
+      return cmd.complete(a, b, c)
+    end
+  end
+
+  return ''
 end
 
 return M
