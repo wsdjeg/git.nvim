@@ -1,7 +1,7 @@
 local M = {}
 
 local log = require('git.log')
-local argv_parser = require('spacevim.api.vim.argv')
+local util = require('git.util')
 
 local cmds = {
   'add',
@@ -45,7 +45,7 @@ update_cmd()
 function M.run(cmdline)
   -- log.debug('cmdlien:' .. cmdline)
 
-  local argv = argv_parser.parser(cmdline)
+  local argv = util.parser(cmdline)
 
   -- log.debug('argvs:' .. vim.inspect(argv))
 
