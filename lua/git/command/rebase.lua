@@ -1,7 +1,7 @@
 local m = {}
 
-local job = require('spacevim.api.job')
-local nt = require('spacevim.api.notify')
+local job = require('job')
+local nt = require('notify')
 local log = require('git.log')
 local std_data = {}
 local rebase_todo_bufnr = -1

@@ -32,16 +32,14 @@ function M.complete(arglead, cmdline, cursorpos)
     return table.concat({ '-b', '-m' }, '\n')
   end
   local branchs = vim.fn.systemlist('git branch')
-  return table.concat(
+  return
     vim.tbl_map(
-      function(t)
-        return vim.fn.trim(t)
-      end,
-      vim.tbl_filter(function(t)
-        return not vim.startswith(t, '*')
-      end, branchs)
-    ),
-    '\n'
+    function(t)
+      return vim.fn.trim(t)
+    end,
+    vim.tbl_filter(function(t)
+      return not vim.startswith(t, '*')
+    end, branchs)
   )
 end
 

@@ -13,8 +13,8 @@ local reflog_stderr = {}
 local jobid = -1
 local reflog_bufid = -1
 
-local job = require('spacevim.api.job')
-local nt = require('spacevim.api.notify')
+local job = require('job')
+local nt = require('notify')
 
 local log = require('git.log')
 

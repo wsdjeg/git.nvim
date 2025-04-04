@@ -23,7 +23,8 @@ require('plug').add({
     depends = {
       { 'wsdjeg/job.nvim' },
       { 'wsdjeg/notify.nvim' },
-      { 'wsdjeg/logger.nvim' },
+      { 'wsdjeg/logger.nvim' }, -- not strictly required 
+      { 'wsdjeg/rooter.nvim' }, -- not strictly required
     },
   },
 })

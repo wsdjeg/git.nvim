@@ -3,7 +3,7 @@ local M = {}
 local job = require('job')
 local nt = require('notify')
 local log = require('git.log')
-local str = require('spacevim.api.data.string')
+local util = require('git.util')
 
 local blame_buffer_nr = -1
 local blame_show_buffer_nr = -1
@@ -126,7 +126,7 @@ local function generate_context(ls)
     log.debug(vim.inspect(v))
     table.insert(
       rst,
-      str.fill(v.summary, 40) .. string.rep(' ', 4) .. vim.fn.strftime('%Y %b %d %X', v.time)
+      util.fill(v.summary, 40) .. string.rep(' ', 4) .. vim.fn.strftime('%Y %b %d %X', v.time)
     )
   end
   return rst

@@ -1,5 +1,31 @@
 local M = {}
+function M.fill(str, length, ...)
+    local v = ''
+    local rightmost
+    if string.len(str) <= length then
+        v = str
+    else
+        rightmost= 0
+        while string.len(string.sub(str, 0, rightmost)) < length do
+            rightmost = rightmost + 1
+        end
 
+    end
+    v = string.sub(str, 0, rightmost)
+    local char = select(1, ...) or ' '
+    return v .. string.rep(char, length - string.len(v))
+end
+function M.is_last_win()
+  local win_list = vim.api.nvim_tabpage_list_wins(0)
+  local num = #win_list
+  for _, v in ipairs(win_list) do
+    if M.is_float(v) then
+      num = num - 1
+    end
+  end
+  return num == 1
+  
+end
 function M.string2chars(str)
     local t = {}
     for k in string.gmatch(str, '.') do table.insert(t, k) end

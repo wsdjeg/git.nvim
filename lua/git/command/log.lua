@@ -1,10 +1,9 @@
 local M = {}
 
-local job = require('spacevim.api.job')
-local nt = require('spacevim.api.notify')
+local job = require('job')
+local nt = require('notify')
 local log = require('git.log')
-local str = require('spacevim.api.data.string')
-local win = require('spacevim.api.vim.window')
+local util = require('git.util')
 
 local git_log_pretty = 'tformat:%Cred%h%Creset - %s %Cgreen(%an %ad)%Creset'
 local bufnr = -1
@@ -20,7 +19,7 @@ local function close_commit_win()
 end
 
 local function close_log_win()
-  if vim.fn.tabpagenr('$') > 1 and win.is_last_win() then
+  if vim.fn.tabpagenr('$') > 1 and util.is_last_win() then
     vim.cmd('quit')
     return
   end
