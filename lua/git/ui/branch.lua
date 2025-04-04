@@ -8,9 +8,9 @@
 
 local M = {}
 
-local job = require('spacevim.api.job')
+local job = require('job')
 local log = require('git.log')
-local nt = require('spacevim.api.notify')
+local nt = require('notify')
 local branch_manager_bufnr = -1
 local jobid = -1
 local branches = {}

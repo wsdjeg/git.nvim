@@ -1,16 +1,15 @@
 local M = {}
 
-local job = require('spacevim.api.job')
-local nt = require('spacevim.api.notify')
+local job = require('job')
+local nt = require('notify')
 local log = require('git.log')
-local str = require('spacevim.api.data.string')
 local branch_ui = require('git.ui.branch')
 
 local branch_info = {}
 local job_pwds = {}
 
 local function on_stdout_show_branch(id, data)
-  local b = str.trim(table.concat(data, ''))
+  local b = vim.trim(table.concat(data, ''))
   if #b > 0 then
     local pwd = job_pwds['jobid' .. id] or ''
     if #pwd > 0 then
