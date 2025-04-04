@@ -15,6 +15,18 @@ function M.fill(str, length, ...)
     local char = select(1, ...) or ' '
     return v .. string.rep(char, length - string.len(v))
 end
+function M.is_float(winid)
+    if winid > 0 then
+        local ok, c = pcall(vim.api.nvim_win_get_config, winid)
+        if ok and c.col ~= nil then
+            return true
+        else
+            return false
+        end
+    else
+        return false
+    end
+end
 function M.is_last_win()
   local win_list = vim.api.nvim_tabpage_list_wins(0)
   local num = #win_list
