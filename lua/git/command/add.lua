@@ -42,7 +42,7 @@ end
 function M.complete(ArgLead, CmdLine, CursorPos)
   local rst = vim.fn.getcompletion(ArgLead, 'file')
   table.insert(rst, '%')
-  return table.concat(rst, '\n')
+  return rst
 end
 
 return M

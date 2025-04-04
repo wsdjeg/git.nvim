@@ -41,7 +41,6 @@ end
 
 update_cmd()
 
-
 function M.run(cmdline)
   -- log.debug('cmdlien:' .. cmdline)
 
@@ -52,14 +51,10 @@ function M.run(cmdline)
   local command = table.remove(argv, 1)
 
   if not supported_commands[command] then
-      vim.api.nvim_echo(
-        { { ':Git ' .. command .. ' is not supported', 'WarningMsg' } },
-        false,
-        {}
-      )
+    vim.api.nvim_echo({ { ':Git ' .. command .. ' is not supported', 'WarningMsg' } }, false, {})
     return
   end
-  
+
   local ok, cmd = pcall(require, 'git.command.' .. command)
   if ok then
     if type(cmd.run) == 'function' then
@@ -77,11 +72,21 @@ function M.run(cmdline)
 end
 
 function M.complete(ArgLead, CmdLine, CursorPos)
-    local str = string.sub(CmdLine, 1, CursorPos)
-    if vim.regex([[^Git\s\+[a-zA-Z]*$]]):match_str(str) then
-        return vim.tbl_filter(function(t) return vim.startswith(t, ArgLead) end, cmds)
-    end
+  local str = string.sub(CmdLine, 1, CursorPos)
+  if vim.regex([[^Git\s\+[a-zA-Z]*$]]):match_str(str) then
+    return vim.tbl_filter(function(t)
+      return vim.startswith(t, ArgLead)
+    end, cmds)
+  end
 
+  local command = vim.fn.split(CmdLine)[2]
+
+  log.info('command is:' .. command)
+
+  local ok, cmd = pcall(require, 'git.command.' .. command)
+  if ok and type(cmd.complete) == 'function' then
+    return cmd.complete(ArgLead, CmdLine, CursorPos)
+  end
 end
 
 return M
