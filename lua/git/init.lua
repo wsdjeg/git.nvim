@@ -79,7 +79,7 @@ end
 function M.complete(ArgLead, CmdLine, CursorPos)
     local str = string.sub(CmdLine, 1, CursorPos)
     if vim.regex([[^Git\s\+[a-zA-Z]*$]]):match_str(str) then
-        return table.concat(cmds, '\n')
+        return vim.tbl_filter(function(t) return vim.startswith(t, ArgLead) end, cmds)
     end
 
 end
