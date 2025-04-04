@@ -76,19 +76,12 @@ function M.run(cmdline)
   end
 end
 
-function M.complete(a, b, c)
-  local argv = util.parser(b)
-
-  local command = table.remove(argv, 1)
-
-  local ok, cmd = pcall(require, 'git.command.' .. command)
-  if ok then
-    if type(cmd.complete) == 'function' then
-      return cmd.complete(a, b, c)
+function M.complete(ArgLead, CmdLine, CursorPos)
+    local str = string.sub(CmdLine, 1, CursorPos)
+    if vim.regex([[^Git\s\+[a-zA-Z]*$']]):match_str(str) then
+        return cmds
     end
-  end
 
-  return ''
 end
 
 return M
