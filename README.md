@@ -6,6 +6,7 @@ git.nvim is a plugin to use git command in Neovim.
 
 * [Installation](#installation)
 * [Usage](#usage)
+* [Statusline](#statusline)
 * [Self-Promotion](#self-promotion)
 * [Feedback](#feedback)
 
@@ -48,6 +49,31 @@ Then use `:PlugInstall git.nvim` to install this plugin.
 - `:Git branch`: list, create, or delete branches
 - `:Git rebase`: rebase git commit
 - `:Git diff`: view git-diff info
+
+## Statusline
+
+If you want to display branch info on statusline, you can use `v:lua.require("git.command.branch").current()`, for example:
+
+using [statusline.nvim](https://github.com/wsdjeg/statusline.nvim):
+
+```lua
+require('plug').add({
+  {
+    'wsdjeg/statusline.nvim',
+    events = { 'VimEnter' },
+    config = function()
+      require('statusline').register_sections('vcs', function()
+        return '%{ v:lua.require("git.command.branch").current() }'
+      end)
+      require('statusline').setup({
+        left_sections = { 'winnr', 'filename', 'vcs' },
+      })
+    end,
+  },
+})
+```
+
+![Image](https://github.com/user-attachments/assets/3ae8bc49-1e0a-40fb-b3f9-25cbd9fd956c)
 
 ## Self-Promotion
 
