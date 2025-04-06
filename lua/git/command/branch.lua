@@ -124,7 +124,6 @@ function M.run(argv)
   local cmd = { 'git', 'branch' }
 
   if #argv == 0 then
-
     require('git.ui.branch').open()
 
     return
@@ -149,9 +148,16 @@ end
 
 function M.complete(arglead, cmdline, cursorpos)
   if vim.startswith(arglead, '-') then
-    return table.concat({'-d', '-D'}, '\n')
+    return table.concat({ '-d', '-D' }, '\n')
   end
-  return table.concat(vim.fn.map(vim.fn.systemlist('git branch --no-merged'), 'trim(v:val)'), '\n')
+  return vim.tbl_filter(
+    function(t)
+      return vim.startswith(t, arglead)
+    end,
+    vim.tbl_map(function(t)
+      return vim.trim(t)
+    end, vim.fn.systemlist('git branch --no-merged'))
+  )
 end
 
 return M
