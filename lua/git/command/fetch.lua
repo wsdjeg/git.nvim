@@ -55,7 +55,7 @@ function M.complete(ArgLead, CmdLine, CursorPos)
 
   local str = string.sub(CmdLine, 1, CursorPos)
   if vim.regex([[^Git\s\+fetch\s\+[^ ]*$]]):match_str(str) then
-    return table.concat(get_remotes(), '\n')
+    return get_remotes()
   else
     return ''
   end
