@@ -50,6 +50,18 @@ Then use `:PlugInstall git.nvim` to install this plugin.
 - `:Git rebase`: rebase git commit
 - `:Git diff`: view git-diff info
 
+The plugin does not provide default key binding, here is an example:
+
+```lua
+vim.keymap.set('n', '<leader>gs', '<cmd>Git status<cr>', { silent = true })
+vim.keymap.set('n', '<leader>gA', '<cmd>Git add .<cr>', { silent = true })
+vim.keymap.set('n', '<leader>gc', '<cmd>Git commit<cr>', { silent = true })
+vim.keymap.set('n', '<leader>gv', '<cmd>Git log<cr>', { silent = true })
+vim.keymap.set('n', '<leader>gV', '<cmd>Git log %<cr>', { silent = true })
+vim.keymap.set('n', '<leader>gp', '<cmd>Git push<cr>', { silent = true })
+vim.keymap.set('n', '<leader>gd', '<cmd>Git diff<cr>', { silent = true })
+```
+
 ## Statusline
 
 If you want to display branch info on statusline, you can use `v:lua.require("git.command.branch").current()`, for example:
