@@ -61,4 +61,3 @@ Love this plugin? Follow [me](https://wsdjeg.net/) on
 ## Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
-If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
