@@ -59,4 +59,15 @@ function M.run(argv)
   })
 end
 
+function M.complete(arglead, cmdline, curpos)
+  return vim.tbl_filter(
+    function(t)
+      return vim.startswith(t, arglead)
+    end,
+    vim.tbl_map(function(t)
+      return vim.trim(t)
+    end, vim.fn.systemlist('git branch --no-merged'))
+  )
+end
+
 return M
