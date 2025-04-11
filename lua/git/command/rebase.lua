@@ -86,7 +86,7 @@ local function on_exit(id, code, single)
   if code == 0 and single == 0 then
     nt.notify('git rebase successfully')
   else
-    nt.notify(table.concat(std_data, "\n"), "WarningMsg")
+    nt.notify(table.concat(std_data, '\n'), 'WarningMsg')
   end
 end
 
@@ -97,7 +97,7 @@ local function on_std(id, data)
       rebase_nvim_channal = vim.fn.sockconnect('pipe', address, { rpc = true })
       local bufname = vim.fn.rpcrequest(rebase_nvim_channal, 'nvim_buf_get_name', 0)
       log.debug(bufname)
-      if vim.fn.fnamemodify(bufname, ':t') ==  'git-rebase-todo' then
+      if vim.fn.fnamemodify(bufname, ':t') == 'git-rebase-todo' then
         open_rebase()
       else
         open_commit()
@@ -136,7 +136,9 @@ function m.run(argv)
   })
 end
 function m.complete(ArgLead, CmdLine, CursorPos)
-  return table.concat({'-i', '--abort'}, '\n')
+  return vim.tbl_filter(function(t)
+    return vim.startswith(t, ArgLead)
+  end, { '-i', '--abort' })
 end
 
 return m
