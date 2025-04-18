@@ -75,9 +75,7 @@ local function on_stderr(id, data)
 end
 function M.run(argv)
   local cmd = { 'git', 'grep', '-n' }
-  for _, v in ipairs(argv) do
-    table.insert(cmd, v)
-  end
+  table.insert(cmd, table.concat(argv, ' '))
   log.debug('git-grep cmd:' .. vim.inspect(cmd))
   grep_stdout = {}
   grep_stderr = {}
