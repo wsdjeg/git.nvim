@@ -7,6 +7,19 @@ local log = require('git.log')
 local push_jobid = -1
 local stderr_data = {}
 
+local status = ''
+
+local spinners = require('plugin-utils.unicode.spinners')
+local function update_icon(t)
+  status = t
+end
+
+local s
+
+function M.status()
+  return status
+end
+
 local function on_stdout(id, data)
   if id ~= push_jobid then
     return
@@ -27,6 +40,7 @@ local function on_stderr(id, data)
 end
 
 local function on_exit(id, code, single)
+  s:stop()
   log.debug('push code:' .. code .. ' single:' .. single)
   if id ~= push_jobid then
     return
@@ -60,6 +74,8 @@ function M.run(argv)
     end
   end
   log.debug(vim.inspect(cmd))
+  s = spinners:new(update_icon)
+  s:start()
   push_jobid = job.start(cmd, {
     on_stdout = on_stdout,
     on_stderr = on_stderr,
@@ -96,7 +112,7 @@ local function remote_branch(r)
 end
 
 function M.complete(ArgLead, CmdLine, CursorPos)
-  local str = string.sub(CmdLine, 1,  CursorPos)
+  local str = string.sub(CmdLine, 1, CursorPos)
   if vim.regex([[^Git\s\+push\s\+-$]]):match_str(str) then
     return table.concat(options, '\n')
   elseif
