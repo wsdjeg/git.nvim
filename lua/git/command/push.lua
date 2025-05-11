@@ -11,6 +11,7 @@ local status = ''
 
 local spinners = require('plugin-utils.unicode.spinners')
 local function update_icon(t)
+  vim.cmd.redrawstatus()
   status = t
 end
 
@@ -41,6 +42,7 @@ end
 
 local function on_exit(id, code, single)
   s:stop()
+  status = ''
   log.debug('push code:' .. code .. ' single:' .. single)
   if id ~= push_jobid then
     return
