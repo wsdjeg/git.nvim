@@ -20,15 +20,16 @@ with [nvim-plug](https://github.com/wsdjeg/nvim-plug)
 
 ```lua
 require('plug').add({
-  {
-    'wsdjeg/git.nvim',
-    depends = {
-      { 'wsdjeg/job.nvim' },
-      { 'wsdjeg/notify.nvim' },
-      { 'wsdjeg/logger.nvim' }, -- not strictly required
-      { 'wsdjeg/rooter.nvim' }, -- not strictly required
+    {
+        'wsdjeg/git.nvim',
+        depends = {
+            { 'wsdjeg/job.nvim' },
+            { 'wsdjeg/notify.nvim' },
+            { 'wsdjeg/logger.nvim' }, -- not strictly required
+            { 'wsdjeg/rooter.nvim' }, -- not strictly required
+            { 'wsdjeg/plugin-utils.nvim' }, -- not strictly required
+        },
     },
-  },
 })
 ```
 
