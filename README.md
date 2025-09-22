@@ -4,11 +4,11 @@ git.nvim is a plugin to use git command in Neovim.
 
 <!-- vim-markdown-toc GFM -->
 
-* [Installation](#installation)
-* [Usage](#usage)
-* [Statusline](#statusline)
-* [Self-Promotion](#self-promotion)
-* [Feedback](#feedback)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Statusline](#statusline)
+- [Self-Promotion](#self-promotion)
+- [Feedback](#feedback)
 
 <!-- vim-markdown-toc -->
 
@@ -94,8 +94,7 @@ Like this plugin? Star the repository on
 GitHub.
 
 Love this plugin? Follow [me](https://wsdjeg.net/) on
-[GitHub](https://github.com/wsdjeg) and
-[Twitter](http://twitter.com/wsdtty).
+[GitHub](https://github.com/wsdjeg)
 
 ## Feedback
 
