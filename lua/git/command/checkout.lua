@@ -27,7 +27,7 @@ function M.run(argv)
   job.start(cmd, { on_exit = on_exit })
 end
 
-function M.complete(arglead, cmdline, cursorpos)
+function M.complete(arglead, _, _)
   if vim.startswith(arglead, '-') then
     return table.concat({ '-b', '-m' }, '\n')
   end

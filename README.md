@@ -7,6 +7,7 @@ git.nvim is a plugin to use git command in Neovim.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Statusline](#statusline)
+- [Picker sources](#picker-sources)
 - [Self-Promotion](#self-promotion)
 - [Feedback](#feedback)
 
@@ -87,6 +88,12 @@ require('plug').add({
 ```
 
 ![Image](https://github.com/user-attachments/assets/3ae8bc49-1e0a-40fb-b3f9-25cbd9fd956c)
+
+## Picker sources
+
+This plugin also provides sources for [picker.nvim](https://github.com/wsdjeg/picker.nvim)
+
+- `git-branch`: fuzzy find git branch to checkout
 
 ## Self-Promotion
 
