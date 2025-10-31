@@ -6,6 +6,7 @@ git.nvim is a plugin to use git command in Neovim.
 
 - [Installation](#installation)
 - [Usage](#usage)
+    - [git-branch](#git-branch)
 - [Statusline](#statusline)
 - [Picker sources](#picker-sources)
 - [Self-Promotion](#self-promotion)
@@ -64,6 +65,17 @@ vim.keymap.set('n', '<leader>gp', '<cmd>Git push<cr>', { silent = true })
 vim.keymap.set('n', '<leader>gd', '<cmd>Git diff<cr>', { silent = true })
 ```
 
+### git-branch
+
+`:Git branch` without argument will open branch manager, within the branch manager these key bindings are available:
+
+| key binding | description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `dd`        | delete branch under cursor                                   |
+| `<Enter>`   | checkout branch under cursor                                 |
+| `v`         | view git log of branch under cursor                          |
+| `f`         | view git diff between current branch and branch under cursor |
+
 ## Statusline
 
 If you want to display branch info on statusline, you can use `v:lua.require("git.command.branch").current()`, for example:
@@ -105,4 +117,5 @@ Love this plugin? Follow [me](https://wsdjeg.net/) on
 
 ## Feedback
 
+If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
 If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)

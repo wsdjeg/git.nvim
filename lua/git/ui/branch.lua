@@ -110,13 +110,30 @@ local function view_log_of_branch()
     if vim.startswith(line, '  * ') then
     elseif vim.startswith(line, ' ') then
       local branch = vim.trim(line)
-      vim.cmd('tabnew | Git log ' .. branch)
+      vim.cmd('Git log ' .. branch)
     end
   else
     local line = vim.fn.getline('.')
     local branch = vim.trim(line)
     local remote = string.sub(vim.fn.getline(remote_line), 3)
-    vim.cmd('tabnew | Git log ' .. remote .. '/' .. branch)
+    vim.cmd('Git log ' .. remote .. '/' .. branch)
+  end
+end
+
+local function view_log_of_branch()
+  local remote_line = vim.fn.search('^r:', 'bnW')
+  if remote_line == 0 then
+    local line = vim.fn.getline('.')
+    if vim.startswith(line, '  * ') then
+    elseif vim.startswith(line, ' ') then
+      local branch = vim.trim(line)
+      vim.cmd('Git diff ' .. branch)
+    end
+  else
+    local line = vim.fn.getline('.')
+    local branch = vim.trim(line)
+    local remote = string.sub(vim.fn.getline(remote_line), 3)
+    vim.cmd('Git diff ' .. remote .. '/' .. branch)
   end
 end
 
@@ -143,6 +160,9 @@ function M.open()
     callback = delete_branch,
   })
   vim.api.nvim_buf_set_keymap(branch_manager_bufnr, 'n', 'v', '', {
+    callback = view_log_of_branch,
+  })
+  vim.api.nvim_buf_set_keymap(branch_manager_bufnr, 'n', 'f', '', {
     callback = view_log_of_branch,
   })
 end
