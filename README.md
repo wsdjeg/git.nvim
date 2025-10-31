@@ -1,6 +1,11 @@
 # git.nvim
 
-git.nvim is a plugin to use git command in Neovim.
+git.nvim is an asynchronous git command wrapper plugin, using `:Git` command instead of `:!git`.
+
+[![GitHub License](https://img.shields.io/github/license/wsdjeg/git.nvim)](LICENSE)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/wsdjeg/git.nvim)](https://github.com/wsdjeg/git.nvim/issues)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/wsdjeg/git.nvim)](https://github.com/wsdjeg/git.nvim/commits/master/)
+[![GitHub Release](https://img.shields.io/github/v/release/wsdjeg/git.nvim)](https://github.com/wsdjeg/git.nvim/releases)
 
 <!-- vim-markdown-toc GFM -->
 
@@ -117,5 +122,4 @@ Love this plugin? Follow [me](https://wsdjeg.net/) on
 
 ## Feedback
 
-If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
 If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
