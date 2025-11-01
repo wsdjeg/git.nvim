@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/wsdjeg/git.nvim/compare/v1.3.0...v1.4.0) (2025-11-01)
+
+
+### Features
+
+* add `:Git show` command ([83b09b1](https://github.com/wsdjeg/git.nvim/commit/83b09b1eb352930a71f7d70e7f8e22b992fb0298))
+
 ## [1.3.0](https://github.com/wsdjeg/git.nvim/compare/v1.2.0...v1.3.0) (2025-10-31)
 
 
