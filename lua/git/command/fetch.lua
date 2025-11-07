@@ -50,7 +50,9 @@ end
 
 function M.complete(ArgLead, CmdLine, CursorPos)
   if vim.startswith(ArgLead, '-') then
-    return table.concat({ '--all', '--multiple' }, '\n')
+    return vim.tbl_filter(function(t)
+        return vim.startswith(t, ArgLead)
+    end, { '--all', '--multiple' })
   end
 
   local str = string.sub(CmdLine, 1, CursorPos)
@@ -59,7 +61,7 @@ function M.complete(ArgLead, CmdLine, CursorPos)
       return vim.startswith(t, ArgLead)
     end, get_remotes())
   else
-    return ''
+    return {}
   end
 end
 
