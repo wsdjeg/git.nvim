@@ -48,11 +48,13 @@ local function get_remotes()
   end, vim.fn.systemlist('git remote'))
 end
 
+local options = {'--prune', '--prune-tags', '--no-tags', '--tags', '--all', '--multiple'}
+
 function M.complete(ArgLead, CmdLine, CursorPos)
   if vim.startswith(ArgLead, '-') then
     return vim.tbl_filter(function(t)
         return vim.startswith(t, ArgLead)
-    end, { '--all', '--multiple' })
+    end, options)
   end
 
   local str = string.sub(CmdLine, 1, CursorPos)
