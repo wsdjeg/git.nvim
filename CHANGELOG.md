@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/wsdjeg/git.nvim/compare/v1.3.0...v1.4.0) (2025-11-23)
+
+
+### Features
+
+* add `:Git show` command ([83b09b1](https://github.com/wsdjeg/git.nvim/commit/83b09b1eb352930a71f7d70e7f8e22b992fb0298))
+* add fetch options ([b960c67](https://github.com/wsdjeg/git.nvim/commit/b960c67f0eb1397424005bce4e33cc974d279a89))
+* add luarocks support ([36a3ba1](https://github.com/wsdjeg/git.nvim/commit/36a3ba15bde9b0b32ac8989fc465b4fc69cfdfbd))
+
+
+### Bug Fixes
+
+* fix completion after `:Git fetch` ([4a56d4c](https://github.com/wsdjeg/git.nvim/commit/4a56d4c53d6d286fbef575ef071f1e310d8a9701))
+
 ## [1.3.0](https://github.com/wsdjeg/git.nvim/compare/v1.2.0...v1.3.0) (2025-10-31)
 
 
