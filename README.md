@@ -45,7 +45,7 @@ Then use `:PlugInstall git.nvim` to install this plugin.
 Using [luarocks](https://luarocks.org/)
 
 ```
-luarocks install git.nvim
+luarocks install --server=https://luarocks.org/manifests/wsdjeg git.nvim
 ```
 
 ## Usage
