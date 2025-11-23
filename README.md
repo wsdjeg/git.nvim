@@ -23,7 +23,7 @@ git.nvim is an asynchronous git command wrapper plugin, using `:Git` command ins
 
 Use your preferred Neovim plugin manager to install git.nvim.
 
-with [nvim-plug](https://github.com/wsdjeg/nvim-plug)
+Using [nvim-plug](https://github.com/wsdjeg/nvim-plug)
 
 ```lua
 require('plug').add({
@@ -41,6 +41,12 @@ require('plug').add({
 ```
 
 Then use `:PlugInstall git.nvim` to install this plugin.
+
+Using [luarocks](https://luarocks.org/)
+
+```
+luarocks install git.nvim
+```
 
 ## Usage
 
