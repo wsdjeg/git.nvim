@@ -117,6 +117,7 @@ require('plug').add({
 This plugin also provides sources for [picker.nvim](https://github.com/wsdjeg/picker.nvim)
 
 - `git-branch`: fuzzy find git branch to checkout
+- `git-ghosts`: fuzzy find deleted files
 
 ## Self-Promotion
 
