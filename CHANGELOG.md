@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/wsdjeg/git.nvim/compare/v1.4.0...v1.5.0) (2025-12-03)
+
+
+### Features
+
+* add git-ghosts picker source ([6a7e651](https://github.com/wsdjeg/git.nvim/commit/6a7e65188226f5bb07fa84af2195441f1ef6fe6d))
+
+
+### Bug Fixes
+
+* update release-please action ([022c644](https://github.com/wsdjeg/git.nvim/commit/022c644cc0ca7bcf42a1c98d5f2b5a400d311da8))
+
 ## [1.4.0](https://github.com/wsdjeg/git.nvim/compare/v1.3.0...v1.4.0) (2025-11-23)
 
 
