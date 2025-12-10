@@ -98,6 +98,7 @@ local function show_commit()
     })
 end
 
+local git_log_stdout_cache = {}
 local function openLogBuffer()
     vim.cmd([[
   edit git://log
@@ -109,9 +110,20 @@ local function openLogBuffer()
   setl bufhidden=wipe
   setf git-log
   ]])
+
+    bufnr = vim.api.nvim_get_current_buf()
+    vim.api.nvim_create_autocmd('BufReadCmd', {
+        buffer = bufnr,
+        callback = function()
+            vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
+            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, git_log_stdout_cache[bufnr] or {})
+            vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+            vim.cmd.syntax('on')
+        end,
+    })
+
     -- nnoremap <buffer><silent> <Cr> :call <SID>show_commit()<CR>
     -- nnoremap <buffer><silent> q :call <SID>close_log_win()<CR>
-    bufnr = vim.fn.bufnr()
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
         callback = close_log_win,
     })
@@ -135,6 +147,8 @@ local function on_stdout(id, data)
         vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
     end
     vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+
+    git_log_stdout_cache[bufnr] = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 end
 
 local function on_stderr(id, data)
@@ -151,7 +165,7 @@ function M.run(argv)
         table.insert(cmd, vim.fn.expand('%'))
     else
         for _, v in ipairs(argv) do
-            if v == '--decorate'then
+            if v == '--decorate' then
                 cmd[5] = '--pretty=' .. git_log_pretty2
             end
             table.insert(cmd, v)
