@@ -75,7 +75,7 @@ local function on_exit(id, code, single)
                 vim.api.nvim_set_option_value('modifiable', true, { buf = status_bufnr })
                 vim.api.nvim_buf_set_lines(status_bufnr, 0, -1, false, lines)
                 vim.api.nvim_set_option_value('modifiable', false, { buf = status_bufnr })
-                vim.api.nvim_set_option_value('syntax', 'diff', { buf = status_bufnr })
+                vim.api.nvim_set_option_value('buflisted', false, { buf = status_bufnr })
             end,
         })
     end
