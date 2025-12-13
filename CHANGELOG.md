@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.5.0](https://github.com/wsdjeg/git.nvim/compare/v1.4.0...v1.5.0) (2025-12-13)
+
+
+### Features
+
+* add git-ghosts picker source ([6a7e651](https://github.com/wsdjeg/git.nvim/commit/6a7e65188226f5bb07fa84af2195441f1ef6fe6d))
+
+
+### Bug Fixes
+
+* `:e` command in git-diff buffer ([a87a5f8](https://github.com/wsdjeg/git.nvim/commit/a87a5f886794fb87a387bf7ae15d9a5501feda5a))
+* fix `:e` command in status buffer ([83cf79a](https://github.com/wsdjeg/git.nvim/commit/83cf79af135f2230efac37ef3c7b6adca76f0ea0))
+* reset git-log buffer after `:edit` command ([330e494](https://github.com/wsdjeg/git.nvim/commit/330e494a0246b425679a2fc6411a34ddc9bd45ac))
+* restore buflisted opt ([8600f62](https://github.com/wsdjeg/git.nvim/commit/8600f62460cf6b69e80cb11304f4045f78188c4e))
+* update release-please action ([022c644](https://github.com/wsdjeg/git.nvim/commit/022c644cc0ca7bcf42a1c98d5f2b5a400d311da8))
+* use api to create status window ([ff8a7f3](https://github.com/wsdjeg/git.nvim/commit/ff8a7f35b1574aa5750e39e391f91e19918e37aa))
+
 ## [1.4.0](https://github.com/wsdjeg/git.nvim/compare/v1.3.0...v1.4.0) (2025-11-23)
 
 
