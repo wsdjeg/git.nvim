@@ -1,7 +1,6 @@
 local M = {}
 
 local job = require('job')
-local nt = require('notify')
 local log = require('git.log')
 
 local status_bufnr = -1
@@ -18,17 +17,20 @@ local function close_status_window()
 end
 
 local function openStatusBuffer()
-    vim.cmd([[
-  10split git://status
-  normal! "_dd
-  setl nobuflisted
-  setl nomodifiable
-  setl nonumber norelativenumber
-  setl buftype=nofile
-  setl bufhidden=wipe
-  setf git-status
-  ]])
-    status_bufnr = vim.fn.bufnr()
+    status_bufnr = vim.api.nvim_create_buf(false, false)
+    vim.api.nvim_buf_set_name(status_bufnr, 'git://status')
+    vim.api.nvim_buf_set_lines(status_bufnr, 0, -1, false, {})
+    local winid = vim.api.nvim_open_win(status_bufnr, true, {
+        split = 'above',
+        height = 10,
+    })
+    vim.api.nvim_set_option_value('buflisted', false, { buf = status_bufnr })
+    vim.api.nvim_set_option_value('modifiable', false, { buf = status_bufnr })
+    vim.api.nvim_set_option_value('buftype', 'nofile', { buf = status_bufnr })
+    vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = status_bufnr })
+    vim.api.nvim_set_option_value('filetype', 'git-status', { buf = status_bufnr })
+    vim.api.nvim_set_option_value('number', false, { win = winid })
+    vim.api.nvim_set_option_value('relativenumber', false, { win = winid })
     -- nnoremap <buffer><silent> q :call <SID>close_status_window()<CR>
     vim.api.nvim_buf_set_keymap(status_bufnr, 'n', 'q', '', {
         callback = close_status_window,
@@ -63,16 +65,16 @@ local function on_exit(id, code, single)
     end
     log.debug('git-status exit code:' .. code .. ' single:' .. single)
     if vim.api.nvim_buf_is_valid(status_bufnr) then
-        vim.api.nvim_buf_set_option(status_bufnr, 'modifiable', true)
+        vim.api.nvim_set_option_value('modifiable', true, { buf = status_bufnr })
         vim.api.nvim_buf_set_lines(status_bufnr, 0, -1, false, lines)
-        vim.api.nvim_buf_set_option(status_bufnr, 'modifiable', false)
+        vim.api.nvim_set_option_value('modifiable', false, { buf = status_bufnr })
         pcall(vim.api.nvim_del_autocmd, autocmd)
         autocmd = vim.api.nvim_create_autocmd('BufReadCmd', {
             buffer = status_bufnr,
             callback = function()
-                vim.api.nvim_buf_set_option(status_bufnr, 'modifiable', true)
+                vim.api.nvim_set_option_value('modifiable', true, { buf = status_bufnr })
                 vim.api.nvim_buf_set_lines(status_bufnr, 0, -1, false, lines)
-                vim.api.nvim_buf_set_option(status_bufnr, 'modifiable', false)
+                vim.api.nvim_set_option_value('modifiable', false, { buf = status_bufnr })
                 vim.api.nvim_set_option_value('syntax', 'diff', { buf = status_bufnr })
             end,
         })
