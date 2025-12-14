@@ -12,6 +12,7 @@ git.nvim is an asynchronous git command wrapper plugin, using `:Git` command ins
 - [✨ Features](#-features)
 - [📦 Installation](#-installation)
 - [⚙️ Basic Usage](#-basic-usage)
+    - [git-add](#git-add)
     - [git-branch](#git-branch)
 - [🎨 Statusline](#-statusline)
 - [🔍 Picker source](#-picker-source)
@@ -59,19 +60,12 @@ luarocks install --server=https://luarocks.org/manifests/wsdjeg git.nvim
 
 ## ⚙️ Basic Usage
 
-- `:Git add %`: stage current file.
-- `:Git add .`: stage all files
-- `:Git commit`: edit commit message
-- `:Git push`: push to remote
-- `:Git pull`: pull updates from remote
-- `:Git fetch`: fetch remotes
-- `:Git checkout`: checkout branches
-- `:Git log %`: view git log of current file
-- `:Git config`: list all git config
-- `:Git reflog`: manage reflog information
-- `:Git branch`: list, create, or delete branches
-- `:Git rebase`: rebase git commit
-- `:Git diff`: view git-diff info
+Use `:Git` to execute `git` commands directly inside Neovim,
+with behavior identical to the git command-line tool.
+It supports command and argument completion,
+runs git commands asynchronously without blocking the UI,
+and opens commit messages and rebase messages in split windows
+for a native, in-editor editing experience.
 
 The plugin does not provide default key binding, here is an example:
 
@@ -84,6 +78,10 @@ vim.keymap.set('n', '<leader>gV', '<cmd>Git log %<cr>', { silent = true })
 vim.keymap.set('n', '<leader>gp', '<cmd>Git push<cr>', { silent = true })
 vim.keymap.set('n', '<leader>gd', '<cmd>Git diff<cr>', { silent = true })
 ```
+
+### git-add
+
+just same as `git add <path>`, `%` will be replaced as current file.
 
 ### git-branch
 
