@@ -9,17 +9,26 @@ git.nvim is an asynchronous git command wrapper plugin, using `:Git` command ins
 
 <!-- vim-markdown-toc GFM -->
 
-- [Installation](#installation)
-- [Usage](#usage)
+- [✨ Features](#-features)
+- [📦 Installation](#-installation)
+- [⚙️ Basic Usage](#-basic-usage)
     - [git-branch](#git-branch)
-- [Statusline](#statusline)
-- [Picker sources](#picker-sources)
-- [Self-Promotion](#self-promotion)
-- [Feedback](#feedback)
+- [🎨 Statusline](#-statusline)
+- [🔍 Picker source](#-picker-source)
+- [📣 Self-Promotion](#-self-promotion)
+- [💬 Feedback](#-feedback)
 
 <!-- vim-markdown-toc -->
 
-## Installation
+## ✨ Features
+
+- **Asynchronous Git commands** — Run Git commands via `:Git` without blocking Neovim UI.
+- **Full Git coverage** — Status, add, commit, push/pull, fetch, diff, branch, log, reflog, rebase, and more.
+- **Branch Manager UI** — Interactive branch list with key mappings for checkout, delete, log, and diff.
+- **Picker.nvim sources** — Includes fuzzy finder sources like `git-branch` for quick branch switching.
+- **Statusline integration** — Easily display current branch in your statusline via Lua API.
+
+## 📦 Installation
 
 Use your preferred Neovim plugin manager to install git.nvim.
 
@@ -48,7 +57,7 @@ Using [luarocks](https://luarocks.org/)
 luarocks install --server=https://luarocks.org/manifests/wsdjeg git.nvim
 ```
 
-## Usage
+## ⚙️ Basic Usage
 
 - `:Git add %`: stage current file.
 - `:Git add .`: stage all files
@@ -87,7 +96,7 @@ vim.keymap.set('n', '<leader>gd', '<cmd>Git diff<cr>', { silent = true })
 | `v`         | view git log of branch under cursor                          |
 | `f`         | view git diff between current branch and branch under cursor |
 
-## Statusline
+## 🎨 Statusline
 
 If you want to display branch info on statusline, you can use `v:lua.require("git.command.branch").current()`, for example:
 
@@ -112,14 +121,14 @@ require('plug').add({
 
 ![Image](https://github.com/user-attachments/assets/3ae8bc49-1e0a-40fb-b3f9-25cbd9fd956c)
 
-## Picker sources
+## 🔍 Picker source
 
 This plugin also provides sources for [picker.nvim](https://github.com/wsdjeg/picker.nvim)
 
 - `git-branch`: fuzzy find git branch to checkout
 - `git-ghosts`: fuzzy find deleted files
 
-## Self-Promotion
+## 📣 Self-Promotion
 
 Like this plugin? Star the repository on
 GitHub.
@@ -127,6 +136,6 @@ GitHub.
 Love this plugin? Follow [me](https://wsdjeg.net/) on
 [GitHub](https://github.com/wsdjeg)
 
-## Feedback
+## 💬 Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/git.nvim/issues)
