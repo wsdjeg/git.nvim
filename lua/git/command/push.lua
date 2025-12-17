@@ -103,33 +103,52 @@ local function remotes()
 end
 
 local function remote_branch(r)
-    local branchs = vim.fn.systemlist('git branch -a')
-    if vim.v.shell_error then
-        return ''
-    else
-        branchs = table.concat(
-            vim.fn.map(
-                vim.fn.filter(branchs, [[v:val =~ "\s*remotes/" . a:remote . "/[^ ]*$"]]),
-                'trim(v:val)[len(a:remote) + 9:]'
-            ),
+    local branchs = vim.tbl_filter(
+        function(t)
+            return #t > 0
+        end,
+        vim.tbl_map(function(t)
+            return vim.trim(t)
+        end, vim.split(
+            vim.system({ 'git', 'branch', '-a' }, { text = true }):wait().stdout,
             '\n'
-        )
-        return branchs
+        ))
+    )
+    local rst = {}
+
+    for _, v in ipairs(branchs) do
+        if v:find(' -> ') then
+            -- do nothing
+        elseif vim.startswith(v, 'remotes/' .. r) then
+            local branch = string.sub(v, 10 + #r)
+            if not vim.tbl_contains(rst, branch) then
+                table.insert(rst, branch)
+            end
+        elseif vim.startswith(v, '* ') then
+            table.insert(rst, string.sub(v, 3))
+        end
     end
+    return rst
 end
 
 function M.complete(ArgLead, CmdLine, CursorPos)
     local str = string.sub(CmdLine, 1, CursorPos)
     if vim.regex([[^Git\s\+push\s\+-$]]):match_str(str) then
-        return table.concat(options, '\n')
+        return vim.tbl_filter(function(opt)
+            return vim.startswith(opt, ArgLead)
+        end, options)
     elseif
         vim.regex([[^Git\s\+push\s\+[^ ]*$]]):match_str(str)
         or vim.regex([[^Git\s\+push\s\+-u\s\+[^ ]*$]]):match_str(str)
     then
-        return table.concat(remotes(), '\n')
+        return vim.tbl_filter(function(r)
+            return vim.startswith(r, ArgLead)
+        end, remotes())
     else
-        local remote = vim.fn.matchstr(str, [[\(Git\s\+push\s\+\)\@<=[^ ]*]])
-        return remote_branch(remote)
+        local remote = vim.fn.matchstr(str, [[\(Git\s\+push\s\+-u\s\+\)\@<=[^ ]*]])
+        return vim.tbl_filter(function(t)
+            return vim.startswith(t, ArgLead)
+        end, remote_branch(remote))
     end
 end
 
