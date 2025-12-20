@@ -114,6 +114,27 @@ require('plug').add({
 })
 ```
 
+To display unicode spinners on statusline. You need to use git.nvim together with [utils.nvim](https://github.com/wsdjeg/utils.nvim): 
+
+```lua
+return {
+    'wsdjeg/statusline.nvim',
+    events = { 'VimEnter' },
+    config = function()
+        require('statusline').register_sections('vcs', function()
+            return '%{ v:lua.require("git.command.branch").current() .. v:lua.require("git.command.pull").status() .. v:lua.require("git.command.push").status() }'
+        end)
+        require('statusline').setup({
+            left_sections = { 'winnr', 'filename', 'major mode', 'syntax checking', 'vcs' },
+            right_sections = { 'fileformat', 'fileencoding', 'cursorpos' },
+        })
+    end,
+    type = 'rocks',
+    desc = 'module statusline',
+    dev = true,
+}
+```
+
 ![Image](https://github.com/user-attachments/assets/3ae8bc49-1e0a-40fb-b3f9-25cbd9fd956c)
 
 ## 🔍 Picker source
