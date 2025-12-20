@@ -16,7 +16,7 @@ local grep_stderr = {}
 local jobid = -1
 
 local function on_exit(id, code, single)
-  log.debug('git-rm exit code:' .. code .. ' single:' .. single)
+  log.debug('git-grep exit code:' .. code .. ' single:' .. single)
   if id ~= jobid then
     return
   end
