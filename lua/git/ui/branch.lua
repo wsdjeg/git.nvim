@@ -11,6 +11,7 @@ local M = {}
 local job = require('job')
 local log = require('git.log')
 local nt = require('notify')
+local util = require('git.util')
 local branch_manager_bufnr = -1
 local jobid = -1
 local branches = {}
@@ -26,9 +27,7 @@ local function update_buffer_context()
     table.insert(context, '  ' .. b.name)
   end
   if branch_manager_bufnr ~= -1 and vim.api.nvim_buf_is_valid(branch_manager_bufnr) then
-    vim.api.nvim_buf_set_option(branch_manager_bufnr, 'modifiable', true)
-    vim.api.nvim_buf_set_lines(branch_manager_bufnr, 0, -1, false, context)
-    vim.api.nvim_buf_set_option(branch_manager_bufnr, 'modifiable', false)
+    util.update_buffer(branch_manager_bufnr, context)
   end
 end
 
