@@ -120,7 +120,7 @@ local function view_log_of_branch()
   end
 end
 
-local function view_log_of_branch()
+local function view_diff_of_branch()
   local remote_line = vim.fn.search('^r:', 'bnW')
   if remote_line == 0 then
     local line = vim.fn.getline('.')
@@ -163,7 +163,7 @@ function M.open()
     callback = view_log_of_branch,
   })
   vim.api.nvim_buf_set_keymap(branch_manager_bufnr, 'n', 'f', '', {
-    callback = view_log_of_branch,
+    callback = view_diff_of_branch,
   })
 end
 
