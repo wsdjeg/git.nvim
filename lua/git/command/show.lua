@@ -65,9 +65,7 @@ local function on_exit(id, code, single)
     log.debug('git-show exit code:' .. code .. ' single:' .. single)
     if #show_diff_lines > 0 then
         bufnr = open_diff_buffer()
-        vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, show_diff_lines)
-        vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+        util.update_buffer(bufnr, show_diff_lines)
     end
 end
 

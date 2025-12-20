@@ -13,12 +13,6 @@ local commit_bufnr = -1
 local show_lines = {}
 local show_commit_jobid = -1
 
-local function close_commit_win()
-    if vim.api.nvim_buf_is_valid(commit_bufnr) then
-        vim.cmd('bd ' .. commit_bufnr)
-    end
-end
-
 local function close_log_win()
     if vim.fn.tabpagenr('$') > 1 and util.is_last_win() then
         vim.cmd('quit')
@@ -75,9 +69,7 @@ local function on_show_exit(id, code, single)
     end
     log.debug('git-show exit code:' .. code .. ' single:' .. single)
     if vim.api.nvim_buf_is_valid(commit_bufnr) then
-        vim.api.nvim_buf_set_option(commit_bufnr, 'modifiable', true)
-        vim.api.nvim_buf_set_lines(commit_bufnr, 0, -1, false, show_lines)
-        vim.api.nvim_buf_set_option(commit_bufnr, 'modifiable', false)
+        util.update_buffer(commit_bufnr, show_lines)
     end
 end
 
@@ -115,9 +107,7 @@ local function openLogBuffer()
     vim.api.nvim_create_autocmd('BufReadCmd', {
         buffer = bufnr,
         callback = function()
-            vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
-            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, git_log_stdout_cache[bufnr] or {})
-            vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+            util.update_buffer(bufnr, git_log_stdout_cache[bufnr] or {})
             vim.cmd.syntax('on')
         end,
     })
@@ -140,22 +130,22 @@ local function on_stdout(id, data)
     if not vim.api.nvim_buf_is_valid(bufnr) then
         bufnr = openLogBuffer()
     end
-    vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
+    vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
     if vim.api.nvim_buf_line_count(bufnr) == 1 and vim.fn.getline('$') == '' then
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, data)
     else
         vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
     end
-    vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+    vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
 
     git_log_stdout_cache[bufnr] = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 end
 
-local function on_stderr(id, data)
+local function on_stderr(_, data)
     nt.notify(data, 'WarningMsg')
 end
 
-local function on_exit(id, code, single)
+local function on_exit(_, code, single)
     log.debug('git-log exit code:' .. code .. ' single:' .. single)
 end
 
@@ -173,9 +163,7 @@ function M.run(argv)
     end
     log.debug('git-log cmd:' .. vim.inspect(cmd))
     if vim.api.nvim_buf_is_valid(bufnr) then
-        vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
-        vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+        util.update_buffer(bufnr, {})
     end
     jobid = job.start(cmd, {
         on_stdout = on_stdout,

@@ -6,14 +6,14 @@
 -- License: GPLv3
 --=============================================================================
 
-local m = {}
+local M = {}
 
 local job = require('job')
 local nt = require('notify')
 local log = require('git.log')
 local stddata = {}
 
-local function on_exit(id, code, single)
+local function on_exit(_, code, single)
   log.debug('git-rm exit code:' .. code .. ' single:' .. single)
   if code == 0 and single == 0 then
     if vim.fn.exists(':GitGutter') == 2 then
@@ -25,13 +25,13 @@ local function on_exit(id, code, single)
   end
 end
 
-local function on_std(id, data)
+local function on_std(_, data)
   for _, v in ipairs(data) do
     table.insert(stddata, v)
   end
 end
 
-function m.run(argv)
+function M.run(argv)
   local cmd = { 'git', 'rm' }
   if #argv == 1 and argv[1] == '%' then
     table.insert(cmd, vim.fn.expand('%'))
@@ -47,9 +47,9 @@ function m.run(argv)
   })
 end
 
-function M.complete(ArgLead, CmdLine, CursorPos)
+function M.complete(ArgLead)
   local rst = vim.fn.getcompletion(ArgLead, 'file')
   return table.concat(rst, '\n')
 end
 
-return m
+return M

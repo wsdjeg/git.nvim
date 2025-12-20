@@ -66,15 +66,11 @@ local function on_exit(id, code, single)
     log.debug('git-diff exit code:' .. code .. ' single:' .. single)
     if #diff_lines > 0 then
         bufnr = open_diff_buffer()
-        vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, diff_lines)
-        vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+        util.update_buffer(bufnr, diff_lines)
         vim.api.nvim_create_autocmd('BufReadCmd', {
             buffer = bufnr,
             callback = function()
-                vim.api.nvim_buf_set_option(bufnr, 'modifiable', true)
-                vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, diff_lines)
-                vim.api.nvim_buf_set_option(bufnr, 'modifiable', false)
+                util.update_buffer(bufnr, diff_lines)
                 vim.api.nvim_set_option_value('syntax', 'diff', { buf = bufnr })
             end,
         })

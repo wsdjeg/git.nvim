@@ -12,7 +12,6 @@ function M.enabled()
     return ok
 end
 
----@type PickerItem[]
 local items = {}
 
 local cmd = { 'git', 'log', '--diff-filter=D', '--summary' }
@@ -21,7 +20,7 @@ function M.set()
     items = {}
     local re = vim.regex(' delete mode 100644 ')
     job.start(cmd, {
-        on_stdout = function(id, data)
+        on_stdout = function(_, data)
             for _, line in ipairs(data) do
                 if re:match_str(line) then
                     local fs = vim.split(line, '%s')
@@ -33,7 +32,7 @@ function M.set()
                 end
             end
         end,
-        on_exit = function(id, data, single)
+        on_exit = function()
             require('picker.windows').handle_prompt_changed()
         end,
     })
