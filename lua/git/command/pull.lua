@@ -14,7 +14,7 @@ local conflict_files = {}
 
 local status = ''
 
-local ok, spinners = pcall(require, 'plugin-utils.unicode.spinners')
+local ok, spinners = pcall(require, 'utils.unicode.spinners')
 local function update_icon(t)
     vim.cmd.redrawstatus()
     status = t
