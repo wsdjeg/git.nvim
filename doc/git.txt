@@ -4,20 +4,27 @@ Author: Eric Wong <wsdjeg@outlook.com>
 Url: https://github.com/wsdjeg/git.nvim
 
 ==============================================================================
-CONTENTS                                                            *git*
+CONTENTS                                                                 *git*
 
-  1. Introduction                                        |git-introduction|
-  2. Features                                                |git-features|
-  3. Installation                                        |git-installation|
+  1. Introduction                                           |git-introduction|
+  2. Features                                                   |git-features|
+  3. Installation                                           |git-installation|
+  4. Basic Usage                                                   |git-usage|
+   4.1 git-add                                                       |git-add|
+   4.2 git-branch                                                 |git-branch|
+  5. Statusline                                               |git-statusline|
+  6. Picker source                                        |git-picker-sources|
+  7. Self-Promotion                                       |git-self-promotion|
+  8. Feedback                                                   |git-feedback|
 
 ==============================================================================
- 1. INTRODUCTION                                          *git-introduction*
+ 1. INTRODUCTION                                            *git-introduction*
 
 git.nvim is an asynchronous git command wrapper plugin, using `:Git` command
 instead of `:!git`.
 
 ==============================================================================
- 2. FEATURES                                                  *git-features*
+ 2. FEATURES                                                    *git-features*
 
 - Asynchronous Git commands: Run Git commands via `:Git` without blocking
   Neovim UI.
@@ -30,3 +37,137 @@ instead of `:!git`.
 - Statusline integration: Easily display current branch in your statusline
   via Lua API.
 
+==============================================================================
+ 3. INSTALLATION                                            *git-installation*
+
+Use your preferred Neovim plugin manager to install git.nvim.
+
+Using nvim-plug: https://github.com/wsdjeg/nvim-plug
+>
+  require('plug').add({
+    {
+      'wsdjeg/git.nvim',
+      depends = {
+        { 'wsdjeg/job.nvim' },
+        { 'wsdjeg/notify.nvim' },
+      },
+    },
+  })
+
+Then use `:Plug install git.nvim` to install this plugin.
+
+Using luarocks: https://luarocks.org/
+>
+  luarocks install --server=https://luarocks.org/manifests/wsdjeg git.nvim
+<
+
+==============================================================================
+ 4. Basic Usage                                                    *git-usage*
+
+Use `:Git` to execute `git` commands directly inside Neovim,
+with behavior identical to the git command-line tool.
+It supports command and argument completion,
+runs git commands asynchronously without blocking the UI,
+and opens commit messages and rebase messages in split windows
+for a native, in-editor editing experience.
+
+The plugin does not provide default key binding, here is an example:
+>
+  vim.keymap.set('n', '<leader>gs', '<cmd>Git status<cr>', { silent = true })
+  vim.keymap.set('n', '<leader>gA', '<cmd>Git add .<cr>', { silent = true })
+  vim.keymap.set('n', '<leader>gc', '<cmd>Git commit<cr>', { silent = true })
+  vim.keymap.set('n', '<leader>gv', '<cmd>Git log<cr>', { silent = true })
+  vim.keymap.set('n', '<leader>gV', '<cmd>Git log %<cr>', { silent = true })
+  vim.keymap.set('n', '<leader>gp', '<cmd>Git push<cr>', { silent = true })
+  vim.keymap.set('n', '<leader>gd', '<cmd>Git diff<cr>', { silent = true })
+<
+
+==============================================================================
+ 4.1 git-add                                                         *git-add*
+
+just same as `git add <path>`, `%` will be replaced as current file.
+
+==============================================================================
+ 4.2 git-branch                                                   *git-branch*
+
+`:Git branch` without argument will open branch manager, within the branch
+manager these key bindings are available:
+
+| key binding | description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `dd`          | delete branch under cursor                                   |
+| `<Enter>`     | checkout branch under cursor                                 |
+| `v`           | view git log of branch under cursor                          |
+| `f`           | view git diff between current branch and branch under cursor |
+
+==============================================================================
+ 5. Statusline                                                *git-statusline*
+
+If you want to display branch info on statusline, you can use
+`v:lua.require("git.command.branch").current()`, for example:
+
+using [statusline.nvim](https://github.com/wsdjeg/statusline.nvim):
+
+```lua
+require('plug').add({
+  {
+    'wsdjeg/statusline.nvim',
+    events = { 'VimEnter' },
+    config = function()
+      require('statusline').register_sections('vcs', function()
+        return '%{ v:lua.require("git.command.branch").current() }'
+      end)
+      require('statusline').setup({
+        left_sections = { 'winnr', 'filename', 'vcs' },
+      })
+    end,
+  },
+})
+```
+
+To display unicode spinners on statusline. You need to use git.nvim
+together with utils.nvim: https://github.com/wsdjeg/utils.nvim
+>
+  return {
+    'wsdjeg/statusline.nvim',
+    events = { 'VimEnter' },
+    config = function()
+      require('statusline').register_sections('vcs', function()
+        return '%{ v:lua.require("git.command.branch").current() .. v:lua.require("git.command.pull").status() .. v:lua.require("git.command.push").status() }'
+      end)
+      require('statusline').setup({
+        left_sections = { 'winnr', 'filename', 'major mode', 'syntax checking', 'vcs' },
+        right_sections = { 'fileformat', 'fileencoding', 'cursorpos' },
+      })
+    end,
+    type = 'rocks',
+    desc = 'module statusline',
+    dev = true,
+  }
+<
+
+==============================================================================
+ 6. Picker source                                         *git-picker-sources*
+
+This plugin also provides sources for picker.nvim:
+https://github.com/wsdjeg/picker.nvim
+
+- `git-branch`: fuzzy find git branch to checkout
+- `git-ghosts`: fuzzy find deleted files
+
+==============================================================================
+ 7. Self-Promotion                                        *git-self-promotion*
+
+Like this plugin? Star the repository on
+GitHub.
+
+Love this plugin? Follow [me](https://wsdjeg.net/) on
+[GitHub](https://github.com/wsdjeg)
+
+==============================================================================
+ 8. Feedback                                                    *git-feedback*
+
+If you encounter any bugs or have suggestions, please file an issue in the
+issue tracker: https://github.com/wsdjeg/git.nvim/issues
+
+ vim:cc=78:tw=78:ts=2:sw=2:et:ft=help:norl:
