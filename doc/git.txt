@@ -1,0 +1,32 @@
+*git.nvim* An asynchronous git wrapper For Neovim Written In Lua
+
+Author: Eric Wong <wsdjeg@outlook.com>
+Url: https://github.com/wsdjeg/git.nvim
+
+==============================================================================
+CONTENTS                                                            *git*
+
+  1. Introduction                                        |git-introduction|
+  2. Features                                                |git-features|
+  3. Installation                                        |git-installation|
+
+==============================================================================
+ 1. INTRODUCTION                                          *git-introduction*
+
+git.nvim is an asynchronous git command wrapper plugin, using `:Git` command
+instead of `:!git`.
+
+==============================================================================
+ 2. FEATURES                                                  *git-features*
+
+- Asynchronous Git commands: Run Git commands via `:Git` without blocking
+  Neovim UI.
+- Full Git coverage: Status, add, commit, push/pull, fetch, diff, branch,
+  log, reflog, rebase, and more.
+- Branch Manager UI: Interactive branch list with key mappings for
+  checkout, delete, log, and diff.
+- Picker.nvim sources: Includes fuzzy finder sources like `git-branch` for
+  quick branch switching.
+- Statusline integration: Easily display current branch in your statusline
+  via Lua API.
+
