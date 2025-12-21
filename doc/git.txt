@@ -13,6 +13,7 @@ CONTENTS                                                                 *git*
    4.1 git-add                                                       |git-add|
    4.2 git-branch                                                 |git-branch|
    4.3 git-rm                                                         |git-rm|
+   4.4 git-blame                                                   |git-blame|
   5. Statusline                                               |git-statusline|
   6. Picker source                                        |git-picker-sources|
   7. Self-Promotion                                       |git-self-promotion|
@@ -106,6 +107,23 @@ manager these key bindings are available:
 
 Remove files from the working tree and from the index. Supports file name
 completion after `:Git rm ` command.
+
+==============================================================================
+ 4.4 git-blame                                                     *git-blame*
+
+Show the revision and author that last modified each line of a file,
+displayed in split windows for easy inspection.
+
+The blame view lets you quickly trace changes line-by-line and
+jump between file revisions without leaving Neovim.
+
+key bindings in blame windows.
+
+| key binding | description                   |
+| ----------- | ----------------------------- |
+| `<Enter>`     | open previous of current line |
+| `<BS>`        | switch back to newer version  |
+
 
 ==============================================================================
  5. Statusline                                                *git-statusline*

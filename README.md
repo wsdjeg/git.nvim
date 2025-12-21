@@ -13,6 +13,7 @@ git.nvim is an asynchronous git command wrapper plugin, using `:Git` command ins
 - [📦 Installation](#-installation)
 - [⚙️ Basic Usage](#-basic-usage)
     - [git-add](#git-add)
+    - [git-blame](#git-blame)
     - [git-branch](#git-branch)
     - [Git-rm](#git-rm)
 - [🎨 Statusline](#-statusline)
@@ -81,6 +82,21 @@ vim.keymap.set('n', '<leader>gd', '<cmd>Git diff<cr>', { silent = true })
 
 just same as `git add <path>`, `%` will be replaced as current file.
 
+### git-blame
+
+Show the revision and author that last modified each line of a file,
+displayed in split windows for easy inspection.
+
+The blame view lets you quickly trace changes line-by-line and
+jump between file revisions without leaving Neovim.
+
+key bindings in blame windows.
+
+| key binding | description                   |
+| ----------- | ----------------------------- |
+| `<Enter>`   | open previous of current line |
+| `<BS>`      | switch back to newer version  |
+
 ### git-branch
 
 `:Git branch` without argument will open branch manager, within the branch manager these key bindings are available:
@@ -119,7 +135,7 @@ require('plug').add({
 })
 ```
 
-To display unicode spinners on statusline. You need to use git.nvim together with [utils.nvim](https://github.com/wsdjeg/utils.nvim): 
+To display unicode spinners on statusline. You need to use git.nvim together with [utils.nvim](https://github.com/wsdjeg/utils.nvim):
 
 ```lua
 return {
