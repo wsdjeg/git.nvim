@@ -12,6 +12,7 @@ CONTENTS                                                                 *git*
   4. Basic Usage                                                   |git-usage|
    4.1 git-add                                                       |git-add|
    4.2 git-branch                                                 |git-branch|
+   4.3 git-rm                                                         |git-rm|
   5. Statusline                                               |git-statusline|
   6. Picker source                                        |git-picker-sources|
   7. Self-Promotion                                       |git-self-promotion|
@@ -99,6 +100,12 @@ manager these key bindings are available:
 | `<Enter>`     | checkout branch under cursor                                 |
 | `v`           | view git log of branch under cursor                          |
 | `f`           | view git diff between current branch and branch under cursor |
+
+==============================================================================
+ 4.3 git-rm                                                           *git-rm*
+
+Remove files from the working tree and from the index. Supports file name
+completion after `:Git rm ` command.
 
 ==============================================================================
  5. Statusline                                                *git-statusline*

@@ -14,6 +14,7 @@ git.nvim is an asynchronous git command wrapper plugin, using `:Git` command ins
 - [⚙️ Basic Usage](#-basic-usage)
     - [git-add](#git-add)
     - [git-branch](#git-branch)
+    - [Git-rm](#git-rm)
 - [🎨 Statusline](#-statusline)
 - [🔍 Picker source](#-picker-source)
 - [📣 Self-Promotion](#-self-promotion)
@@ -90,6 +91,10 @@ just same as `git add <path>`, `%` will be replaced as current file.
 | `<Enter>`   | checkout branch under cursor                                 |
 | `v`         | view git log of branch under cursor                          |
 | `f`         | view git diff between current branch and branch under cursor |
+
+### Git-rm
+
+Remove files from the working tree and from the index. Supports file name completion after `:Git rm ` command.
 
 ## 🎨 Statusline
 
