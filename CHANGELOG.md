@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.5.0](https://github.com/wsdjeg/git.nvim/compare/v1.4.0...v1.5.0) (2026-01-01)
+
+
+### Features
+
+* add git-ghosts picker source ([6a7e651](https://github.com/wsdjeg/git.nvim/commit/6a7e65188226f5bb07fa84af2195441f1ef6fe6d))
+* add git-remote syntax ([854004b](https://github.com/wsdjeg/git.nvim/commit/854004ba4a818c02be509e65421f1a6e8f7f748c))
+* completion after `:Git push` ([bc15886](https://github.com/wsdjeg/git.nvim/commit/bc158869994f376a8fddc020ff3265501b7b84d8))
+* list conflicts in qf when rebase ([2b2d614](https://github.com/wsdjeg/git.nvim/commit/2b2d6149d14ddae37a24388ac2b6b638c25343dd))
+
+
+### Bug Fixes
+
+* `:e` command in git-diff buffer ([a87a5f8](https://github.com/wsdjeg/git.nvim/commit/a87a5f886794fb87a387bf7ae15d9a5501feda5a))
+* **blame:** fix deprecated functions ([ab848e2](https://github.com/wsdjeg/git.nvim/commit/ab848e24e078ea97c13a438d06c3b4a311d6ac8a))
+* fix `:e` command in status buffer ([83cf79a](https://github.com/wsdjeg/git.nvim/commit/83cf79af135f2230efac37ef3c7b6adca76f0ea0))
+* fix all lsp warnings ([c3daf7b](https://github.com/wsdjeg/git.nvim/commit/c3daf7b549226912688553581fe6ab11543b2c92))
+* fix completion of git-rm ([65809a0](https://github.com/wsdjeg/git.nvim/commit/65809a0883b19b6fd58b09abdee9a77e1906de6d))
+* fix log key binding in branch windows ([6cf5431](https://github.com/wsdjeg/git.nvim/commit/6cf5431387eeddd7a624ee6c4c323da00b54db63))
+* merge origin remote syntax ([92c1951](https://github.com/wsdjeg/git.nvim/commit/92c1951c998bdbc4f3356812ef606621aa08c50f))
+* remove deprecated functions ([cb9eaa3](https://github.com/wsdjeg/git.nvim/commit/cb9eaa33516499832a10a9ced25b2d5f2fdd77ac))
+* reset git-log buffer after `:edit` command ([330e494](https://github.com/wsdjeg/git.nvim/commit/330e494a0246b425679a2fc6411a34ddc9bd45ac))
+* restore buflisted opt ([8600f62](https://github.com/wsdjeg/git.nvim/commit/8600f62460cf6b69e80cb11304f4045f78188c4e))
+* update release-please action ([022c644](https://github.com/wsdjeg/git.nvim/commit/022c644cc0ca7bcf42a1c98d5f2b5a400d311da8))
+* update remote ref ([4808a82](https://github.com/wsdjeg/git.nvim/commit/4808a82273d074cbd99375f5e855a05adb93effe))
+* use api to create status window ([ff8a7f3](https://github.com/wsdjeg/git.nvim/commit/ff8a7f35b1574aa5750e39e391f91e19918e37aa))
+
 ## [1.4.0](https://github.com/wsdjeg/git.nvim/compare/v1.3.0...v1.4.0) (2025-11-23)
 
 
