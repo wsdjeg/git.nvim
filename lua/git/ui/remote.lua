@@ -27,12 +27,12 @@ local fetch_remote_jobid = -1
 local fetch_remote_name = ''
 
 local help_info = {
-  '" Git remote manager quickhelp',
-  '" ============================',
-  '" <CR>:    view git log',
-  '" f:       fetch remote under cursor',
-  '" o:       toggle display of branchs',
-  '" q:       close windows"',
+  '" Git Remote Manager — Quick Reference',
+  '" =======================================',
+  '" <CR>:    Git log of the selected branch',
+  '" f:       Fetch remote under cursor',
+  '" o:       Toggle branch list folding',
+  '" q:       Close windows',
 }
 
 -- project_manager support
@@ -299,7 +299,7 @@ function M.open()
   end
   vim.api.nvim_command('topleft vsplit __git_remote_manager__')
   bufnr = vim.api.nvim_get_current_buf()
-  local lines = vim.o.columns * 20 / 100
+  local lines = vim.o.columns * 30 / 100
   vim.api.nvim_command('vertical resize ' .. tostring(lines))
   vim.api.nvim_command(
     'setlocal buftype=nofile bufhidden=wipe nobuflisted nolist noswapfile nowrap cursorline nospell nonu norelativenumber winfixheight nomodifiable  winfixwidth'
