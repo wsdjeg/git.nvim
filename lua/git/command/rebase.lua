@@ -8,22 +8,30 @@ local rebase_todo_bufnr = -1
 local rebase_nvim_channal = ''
 
 local function BufWriteCmd()
-    vim.bo.modified = false
+  vim.bo.modified = false
 end
 
 local function QuitPre()
-    vim.b.git_rebase_quitpre = true
+  vim.b.git_rebase_quitpre = true
 end
 
 local function WinLeave()
-    if vim.b.git_rebase_quitpre then
-        local text = vim.fn.getline(1, '$')
-        vim.fn.rpcrequest(rebase_nvim_channal, 'nvim_buf_set_lines', 0, 0, -1, false, text)
-        vim.fn.rpcnotify(rebase_nvim_channal, 'nvim_command', 'wq')
-    end
+  if vim.b.git_rebase_quitpre then
+    local text = vim.fn.getline(1, '$')
+    vim.fn.rpcrequest(
+      rebase_nvim_channal,
+      'nvim_buf_set_lines',
+      0,
+      0,
+      -1,
+      false,
+      text
+    )
+    vim.fn.rpcnotify(rebase_nvim_channal, 'nvim_command', 'wq')
+  end
 end
 local function open_rebase()
-    vim.cmd([[
+  vim.cmd([[
   10split git://rebase
   normal! "_dd
   setlocal nobuflisted
@@ -39,7 +47,7 @@ local function open_rebase()
 end
 
 local function open_commit()
-    vim.cmd([[
+  vim.cmd([[
   10split git://commit
   normal! "_dd
   setlocal nobuflisted
@@ -54,108 +62,121 @@ local function open_commit()
   ]])
 end
 local function create_autocmd_return_bufnr()
-    local bufid = vim.fn.bufnr('%')
-    local id = vim.api.nvim_create_augroup('git_rebase_todo_buffer', { clear = true })
-    vim.api.nvim_create_autocmd({ 'BufWriteCmd' }, {
-        group = id,
-        buffer = bufid,
-        callback = BufWriteCmd,
-    })
-    vim.api.nvim_create_autocmd({ 'QuitPre' }, {
-        group = id,
-        buffer = bufid,
-        callback = QuitPre,
-    })
-    vim.api.nvim_create_autocmd({ 'WinLeave' }, {
-        group = id,
-        buffer = bufid,
-        callback = WinLeave,
-    })
-    vim.api.nvim_create_autocmd({ 'WinEnter' }, {
-        group = id,
-        buffer = bufid,
-        callback = function()
-            vim.b.git_rebase_quitpre = false
-        end,
-    })
-    return bufid
+  local bufid = vim.fn.bufnr('%')
+  local id =
+    vim.api.nvim_create_augroup('git_rebase_todo_buffer', { clear = true })
+  vim.api.nvim_create_autocmd({ 'BufWriteCmd' }, {
+    group = id,
+    buffer = bufid,
+    callback = BufWriteCmd,
+  })
+  vim.api.nvim_create_autocmd({ 'QuitPre' }, {
+    group = id,
+    buffer = bufid,
+    callback = QuitPre,
+  })
+  vim.api.nvim_create_autocmd({ 'WinLeave' }, {
+    group = id,
+    buffer = bufid,
+    callback = WinLeave,
+  })
+  vim.api.nvim_create_autocmd({ 'WinEnter' }, {
+    group = id,
+    buffer = bufid,
+    callback = function()
+      vim.b.git_rebase_quitpre = false
+    end,
+  })
+  return bufid
 end
 
 local function on_exit(id, code, single)
-    log.debug('git-rebase exit code:' .. code .. ' single:' .. single)
-    if code == 0 and single == 0 then
-        nt.notify('git rebase successfully')
-    else
-        local conflict_files = {}
-        for _, v in ipairs(std_data) do
-            if vim.startswith(v, 'CONFLICT (content): Merge conflict in') then
-                table.insert(conflict_files, string.sub(v, 39))
-            end
-        end
-        if #conflict_files > 0 then
-            local rst = {}
-            for _, file in ipairs(conflict_files) do
-                table.insert(rst, {
-                    filename = vim.fn.fnamemodify(file, ':p'),
-                })
-            end
-            vim.fn.setqflist({}, 'r', { title = 'conlflicts: ' .. #rst .. ' items', items = rst })
-            vim.cmd('botright copen')
-        end
-        nt.notify(table.concat(std_data, '\n'), 'WarningMsg')
+  log.debug('git-rebase exit code:' .. code .. ' single:' .. single)
+  if code == 0 and single == 0 then
+    nt.notify('git rebase successfully')
+  else
+    local conflict_files = {}
+    for _, v in ipairs(std_data) do
+      if vim.startswith(v, 'CONFLICT (content): Merge conflict in') then
+        table.insert(conflict_files, string.sub(v, 39))
+      end
     end
+    if #conflict_files > 0 then
+      local rst = {}
+      for _, file in ipairs(conflict_files) do
+        table.insert(rst, {
+          filename = vim.fn.fnamemodify(file, ':p'),
+        })
+      end
+      vim.fn.setqflist(
+        {},
+        'r',
+        { title = 'conlflicts: ' .. #rst .. ' items', items = rst }
+      )
+      vim.cmd('botright copen')
+    end
+    nt.notify(table.concat(std_data, '\n'), 'WarningMsg')
+  end
 end
 
 local function on_std(id, data)
-    for _, v in ipairs(data) do
-        if vim.startswith(v, 'git-rebase-nvim-serverlist:') then
-            local address = string.sub(v, 28)
-            rebase_nvim_channal = vim.fn.sockconnect('pipe', address, { rpc = true })
-            local bufname = vim.fn.rpcrequest(rebase_nvim_channal, 'nvim_buf_get_name', 0)
-            log.debug(bufname)
-            if vim.fn.fnamemodify(bufname, ':t') == 'git-rebase-todo' then
-                open_rebase()
-            else
-                open_commit()
-            end
-            rebase_todo_bufnr = create_autocmd_return_bufnr()
-            local text =
-                vim.fn.rpcrequest(rebase_nvim_channal, 'nvim_buf_get_lines', 0, 0, -1, false)
-            vim.api.nvim_buf_set_lines(rebase_todo_bufnr, 0, -1, false, text)
-            vim.bo.modified = false
-        else
-            table.insert(std_data, v)
-        end
+  for _, v in ipairs(data) do
+    if vim.startswith(v, 'git-rebase-nvim-serverlist:') then
+      local address = string.sub(v, 28)
+      rebase_nvim_channal =
+        vim.fn.sockconnect('pipe', address, { rpc = true })
+      local bufname =
+        vim.fn.rpcrequest(rebase_nvim_channal, 'nvim_buf_get_name', 0)
+      log.debug(bufname)
+      if vim.fn.fnamemodify(bufname, ':t') == 'git-rebase-todo' then
+        open_rebase()
+      else
+        open_commit()
+      end
+      rebase_todo_bufnr = create_autocmd_return_bufnr()
+      local text = vim.fn.rpcrequest(
+        rebase_nvim_channal,
+        'nvim_buf_get_lines',
+        0,
+        0,
+        -1,
+        false
+      )
+      vim.api.nvim_buf_set_lines(rebase_todo_bufnr, 0, -1, false, text)
+      vim.bo.modified = false
+    else
+      table.insert(std_data, v)
     end
+  end
 end
 
 function m.run(argv)
-    local cmd = {
-        'git',
-        '--no-pager',
-        '-c',
-        [[core.editor=nvim -u NONE --headless -n --cmd "set shada=" --cmd "call chansend(v:stderr, ['', 'git-rebase-nvim-serverlist:' . serverlist()[0], ''])"]],
-        '-c',
-        'color.status=always',
-        '-C',
-        vim.fn.fnamemodify(vim.fn.getcwd(), ':p'),
-        'rebase',
-    }
-    for _, v in ipairs(argv) do
-        table.insert(cmd, v)
-    end
-    log.debug('git-rebase cmd:' .. vim.inspect(cmd))
-    std_data = {}
-    job.start(cmd, {
-        on_exit = on_exit,
-        on_stdout = on_std,
-        on_stderr = on_std,
-    })
+  local cmd = {
+    'git',
+    '--no-pager',
+    '-c',
+    [[core.editor=nvim -u NONE --headless -n --cmd "set shada=" --cmd "call chansend(v:stderr, ['', 'git-rebase-nvim-serverlist:' . serverlist()[0], ''])"]],
+    '-c',
+    'color.status=always',
+    '-C',
+    vim.fn.fnamemodify(vim.fn.getcwd(), ':p'),
+    'rebase',
+  }
+  for _, v in ipairs(argv) do
+    table.insert(cmd, v)
+  end
+  log.debug('git-rebase cmd:' .. vim.inspect(cmd))
+  std_data = {}
+  job.start(cmd, {
+    on_exit = on_exit,
+    on_stdout = on_std,
+    on_stderr = on_std,
+  })
 end
 function m.complete(ArgLead, CmdLine, CursorPos)
-    return vim.tbl_filter(function(t)
-        return vim.startswith(t, ArgLead)
-    end, { '-i', '--abort' })
+  return vim.tbl_filter(function(t)
+    return vim.startswith(t, ArgLead)
+  end, { '-i', '--abort' })
 end
 
 return m

@@ -28,7 +28,11 @@ local function list_conflict_files()
         filename = vim.fn.fnamemodify(file, ':p'),
       })
     end
-    vim.fn.setqflist({}, 'r', { title = ' ' .. #rst .. ' items', items = rst })
+    vim.fn.setqflist(
+      {},
+      'r',
+      { title = ' ' .. #rst .. ' items', items = rst }
+    )
     vim.cmd('botright copen')
     return true
   else
@@ -68,4 +72,3 @@ function M.run(argv)
 end
 
 return M
-

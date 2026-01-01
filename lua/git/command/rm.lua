@@ -36,14 +36,16 @@ function M.run(argv)
   if #argv == 1 and argv[1] == '%' then
     table.insert(cmd, vim.fn.expand('%'))
   else
-    for _, v in ipairs(argv) do table.insert(cmd, v) end
+    for _, v in ipairs(argv) do
+      table.insert(cmd, v)
+    end
   end
   log.debug('git-rm cmd:' .. vim.inspect(cmd))
   stddata = {}
   job.start(cmd, {
     on_exit = on_exit,
     on_stdout = on_std,
-    on_stderr = on_std
+    on_stderr = on_std,
   })
 end
 

@@ -32,8 +32,7 @@ function M.complete(arglead, _, _)
     return table.concat({ '-b', '-m' }, '\n')
   end
   local branchs = vim.fn.systemlist('git branch')
-  return
-    vim.tbl_map(
+  return vim.tbl_map(
     function(t)
       return vim.fn.trim(t)
     end,

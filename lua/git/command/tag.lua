@@ -12,7 +12,8 @@ local function on_stdout(id, data)
     return
   end
   for _, line in pairs(data) do
-    nt.notify_max_width = vim.fn.max({ vim.fn.strwidth(line) + 5, nt.notify_max_width })
+    nt.notify_max_width =
+      vim.fn.max({ vim.fn.strwidth(line) + 5, nt.notify_max_width })
     nt.notify(line)
   end
 end
@@ -79,7 +80,7 @@ end
 function M.complete(ArgLead, CmdLine, CursorPos)
   local str = string.sub(CmdLine, 1, CursorPos)
   if vim.regex([[^Git\s\+tag\s\+-\+$]]):match_str(str) then
-    return {'--list', '-l', '-m', '-a', '-d'}
+    return { '--list', '-l', '-m', '-a', '-d' }
   elseif vim.regex([[^Git\s\+tag\s\+.*-d\s\+[^ -]*$]]):match_str(str) then
     return get_all_tags()
   else
@@ -88,4 +89,3 @@ function M.complete(ArgLead, CmdLine, CursorPos)
 end
 
 return M
-

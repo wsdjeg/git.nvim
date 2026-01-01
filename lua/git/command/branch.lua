@@ -79,7 +79,8 @@ local function on_stdout(id, data)
     return
   end
   for _, line in pairs(data) do
-    nt.notify_max_width = vim.fn.max({ vim.fn.strwidth(line) + 5, nt.notify_max_width })
+    nt.notify_max_width =
+      vim.fn.max({ vim.fn.strwidth(line) + 5, nt.notify_max_width })
     nt.notify(line)
   end
 end

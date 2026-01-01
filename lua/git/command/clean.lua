@@ -14,12 +14,13 @@ local function on_exit(id, code, single)
 end
 
 function M.run(argv)
-  local cmd = {'git', 'clean'}
-  for _, v in ipairs(argv) do table.insert(cmd, v)
+  local cmd = { 'git', 'clean' }
+  for _, v in ipairs(argv) do
+    table.insert(cmd, v)
   end
   log.debug('git-clean cmd:' .. vim.inspect(cmd))
   job.start(cmd, {
-    on_exit = on_exit
+    on_exit = on_exit,
   })
 end
 

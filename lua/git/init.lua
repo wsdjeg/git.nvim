@@ -52,7 +52,11 @@ function M.run(cmdline)
   local command = table.remove(argv, 1)
 
   if not supported_commands[command] then
-    vim.api.nvim_echo({ { ':Git ' .. command .. ' is not supported', 'WarningMsg' } }, false, {})
+    vim.api.nvim_echo(
+      { { ':Git ' .. command .. ' is not supported', 'WarningMsg' } },
+      false,
+      {}
+    )
     return
   end
 
@@ -62,7 +66,12 @@ function M.run(cmdline)
       cmd.run(argv)
     else
       vim.api.nvim_echo(
-        { { 'git.command.' .. command .. '.run  is not function', 'WarningMsg' } },
+        {
+          {
+            'git.command.' .. command .. '.run  is not function',
+            'WarningMsg',
+          },
+        },
         false,
         {}
       )

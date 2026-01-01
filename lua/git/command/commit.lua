@@ -102,7 +102,8 @@ local function openCommitBuffer()
   let b:git_commit_quitpre = 0
   ]])
   local bufid = vim.fn.bufnr('%')
-  local id = vim.api.nvim_create_augroup('git_commit_buffer', { clear = true })
+  local id =
+    vim.api.nvim_create_augroup('git_commit_buffer', { clear = true })
   vim.api.nvim_create_autocmd({ 'BufWriteCmd' }, {
     group = id,
     buffer = bufid,
@@ -162,7 +163,7 @@ local function on_exit(id, code, single)
     vim.api.nvim_buf_set_lines(commit_bufnr, 0, -1, false, commitmsg)
     vim.bo.modified = false
   else
-    nt.notify(table.concat(commit_output, "\n"), 'WarningMsg')
+    nt.notify(table.concat(commit_output, '\n'), 'WarningMsg')
   end
 end
 

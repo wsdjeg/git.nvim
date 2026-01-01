@@ -33,7 +33,7 @@ function m.run(argv)
   job.start(cmd, {
     on_exit = on_exit,
     on_stdout = on_std,
-    on_stderr = on_std
+    on_stderr = on_std,
   })
 end
 

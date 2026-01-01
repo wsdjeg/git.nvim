@@ -49,9 +49,7 @@ local function on_pretty_stdout(id, data)
   end
 end
 
-local function on_pretty_stderr(id, data)
-  
-end
+local function on_pretty_stderr(id, data) end
 
 local function on_pretty_exit(id, code, single)
   if id ~= plog_jobid then
@@ -84,10 +82,8 @@ function M.run(argv)
   plog_jobid = job.start(plog_cmd, {
     on_stdout = on_pretty_stdout,
     on_stderr = on_pretty_stderr,
-    on_exit = on_pretty_exit
+    on_exit = on_pretty_exit,
   })
-
 end
 
 return M
-

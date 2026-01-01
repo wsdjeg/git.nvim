@@ -26,7 +26,10 @@ local function update_buffer_context()
     end
     table.insert(context, '  ' .. b.name)
   end
-  if branch_manager_bufnr ~= -1 and vim.api.nvim_buf_is_valid(branch_manager_bufnr) then
+  if
+    branch_manager_bufnr ~= -1
+    and vim.api.nvim_buf_is_valid(branch_manager_bufnr)
+  then
     util.update_buffer(branch_manager_bufnr, context)
   end
 end
@@ -137,7 +140,10 @@ local function view_diff_of_branch()
 end
 
 function M.open()
-  if branch_manager_bufnr ~= -1 and vim.api.nvim_buf_is_valid(branch_manager_bufnr) then
+  if
+    branch_manager_bufnr ~= -1
+    and vim.api.nvim_buf_is_valid(branch_manager_bufnr)
+  then
     vim.api.nvim_buf_delete(branch_manager_bufnr, {
       force = true,
       unload = false,

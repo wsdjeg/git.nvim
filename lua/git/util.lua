@@ -1,99 +1,100 @@
 local M = {}
 function M.fill(str, length, ...)
-    local v = ''
-    local rightmost
-    if string.len(str) <= length then
-        v = str
-    else
-        rightmost = 0
-        while string.len(string.sub(str, 0, rightmost)) < length do
-            rightmost = rightmost + 1
-        end
+  local v = ''
+  local rightmost
+  if string.len(str) <= length then
+    v = str
+  else
+    rightmost = 0
+    while string.len(string.sub(str, 0, rightmost)) < length do
+      rightmost = rightmost + 1
     end
-    v = string.sub(str, 0, rightmost)
-    local char = select(1, ...) or ' '
-    return v .. string.rep(char, length - string.len(v))
+  end
+  v = string.sub(str, 0, rightmost)
+  local char = select(1, ...) or ' '
+  return v .. string.rep(char, length - string.len(v))
 end
 function M.is_float(winid)
-    if winid > 0 then
-        local ok, c = pcall(vim.api.nvim_win_get_config, winid)
-        if ok and c.col ~= nil then
-            return true
-        else
-            return false
-        end
+  if winid > 0 then
+    local ok, c = pcall(vim.api.nvim_win_get_config, winid)
+    if ok and c.col ~= nil then
+      return true
     else
-        return false
+      return false
     end
+  else
+    return false
+  end
 end
 
 function M.update_buffer(buf, context)
-    if vim.api.nvim_buf_is_valid(buf) then
-        local modifiable = vim.api.nvim_get_option_value('modifiable', { buf = buf })
-        vim.api.nvim_set_option_value('modifiable', true, { buf = buf })
-        vim.api.nvim_buf_set_lines(buf, 0, -1, false, context)
-        vim.api.nvim_set_option_value('modifiable', modifiable, { buf = buf })
-    end
+  if vim.api.nvim_buf_is_valid(buf) then
+    local modifiable =
+      vim.api.nvim_get_option_value('modifiable', { buf = buf })
+    vim.api.nvim_set_option_value('modifiable', true, { buf = buf })
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, context)
+    vim.api.nvim_set_option_value('modifiable', modifiable, { buf = buf })
+  end
 end
 
 function M.is_last_win()
-    local win_list = vim.api.nvim_tabpage_list_wins(0)
-    local num = #win_list
-    for _, v in ipairs(win_list) do
-        if M.is_float(v) then
-            num = num - 1
-        end
+  local win_list = vim.api.nvim_tabpage_list_wins(0)
+  local num = #win_list
+  for _, v in ipairs(win_list) do
+    if M.is_float(v) then
+      num = num - 1
     end
-    return num == 1
+  end
+  return num == 1
 end
 function M.string2chars(str)
-    local t = {}
-    for k in string.gmatch(str, '.') do
-        table.insert(t, k)
-    end
-    return t
+  local t = {}
+  for k in string.gmatch(str, '.') do
+    table.insert(t, k)
+  end
+  return t
 end
 function M.parser(cmdline)
-    local argvs = {}
-    local argv = ''
-    local escape = false
-    local isquote = false
+  local argvs = {}
+  local argv = ''
+  local escape = false
+  local isquote = false
 
-    for _, c in ipairs(M.string2chars(cmdline)) do
-        if not escape and not isquote and c == ' ' then
-            if #argv > 0 then
-                table.insert(argvs, argv)
-                argv = ''
-            end
-        elseif not escape and isquote and c == '"' then
-            isquote = false
-            table.insert(argvs, argv)
-            argv = ''
-        elseif not escape and not isquote and c == '"' then
-            isquote = true
-        elseif not escape and c == '\\' then
-            escape = true
-        elseif escape and c == '"' then
-            argv = argv .. '"'
-            escape = false
-        elseif escape then
-            argv = argv .. '\\' .. c
-            escape = false
-        else
-            argv = argv .. c
-        end
-    end
-
-    -- is last char is \
-    if escape then
-        argv = argv .. '\\'
-    end
-
-    if argv ~= '' then
+  for _, c in ipairs(M.string2chars(cmdline)) do
+    if not escape and not isquote and c == ' ' then
+      if #argv > 0 then
         table.insert(argvs, argv)
+        argv = ''
+      end
+    elseif not escape and isquote and c == '"' then
+      isquote = false
+      table.insert(argvs, argv)
+      argv = ''
+    elseif not escape and not isquote and c == '"' then
+      isquote = true
+    elseif not escape and c == '\\' then
+      escape = true
+    elseif escape and c == '"' then
+      argv = argv .. '"'
+      escape = false
+    elseif escape then
+      argv = argv .. '\\' .. c
+      escape = false
+    else
+      argv = argv .. c
     end
+  end
 
-    return argvs
+  -- is last char is \
+  if escape then
+    argv = argv .. '\\'
+  end
+
+  if argv ~= '' then
+    table.insert(argvs, argv)
+  end
+
+  return argvs
 end
 
 return M
