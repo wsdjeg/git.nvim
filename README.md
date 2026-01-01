@@ -15,7 +15,8 @@ git.nvim is an asynchronous git command wrapper plugin, using `:Git` command ins
     - [git-add](#git-add)
     - [git-blame](#git-blame)
     - [git-branch](#git-branch)
-    - [Git-rm](#git-rm)
+    - [git-rm](#git-rm)
+    - [git-remote](#git-remote)
 - [🎨 Statusline](#-statusline)
 - [🔍 Picker source](#-picker-source)
 - [📣 Self-Promotion](#-self-promotion)
@@ -108,9 +109,22 @@ key bindings in blame windows.
 | `v`         | view git log of branch under cursor                          |
 | `f`         | view git diff between current branch and branch under cursor |
 
-### Git-rm
+### git-rm
 
 Remove files from the working tree and from the index. Supports file name completion after `:Git rm ` command.
+
+### git-remote
+
+Use `:Git remote` command without arguments will open a sidebar where you can clearly see which remote repositories exist and which branches they contain.
+
+![git-remote-ui](https://github.com/user-attachments/assets/68b683e8-e496-420f-80af-a22551de1613)
+
+| key binding | description                     |
+| ----------- | ------------------------------- |
+| `q`         | close remote window             |
+| `<Enter>`   | view git log of selected branch |
+| `f`         | fetch remote under cursor       |
+| `o`         | toggle remote branch list       |
 
 ## 🎨 Statusline
 
