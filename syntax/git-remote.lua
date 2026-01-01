@@ -3,8 +3,18 @@ if vim.b.current_syntax then
 end
 vim.b.current_syntax = 'git-remote'
 vim.cmd([[
-syntax case ignore
-syn match GitRemoteHelp /^".*/
+scriptencoding utf-8
+sy match SPCGitRemoteName '^\s*[▷▼]\s.*'
+sy match SPCGitRemoteTitlePrefix '^\[in\]'
+sy match SPCGitRemoteTitle '^\[in\].*' contains=SPCGitRemoteTitlePrefix
+sy match SPCGitRemoteHelpKey '" \zs[^:]*\ze[:]'
+sy match SPCGitRemoteHelpTitle 'Git remote manager quickhelp'
+sy match SPCGitRemoteHelp '^".*' contains=SPCGitRemoteHelpTitle,SPCGitRemoteHelpKey
 
-hi def link GitRemoteHelp Comment
+hi def link SPCGitRemoteName Directory
+hi def link SPCGitRemoteHelpKey Identifier
+hi def link SPCGitRemoteTitlePrefix Identifier
+hi def link SPCGitRemoteTitle Title
+hi def link SPCGitRemoteHelpTitle Title
+hi def link SPCGitRemoteHelp String
 ]])
