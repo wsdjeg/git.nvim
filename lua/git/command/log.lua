@@ -94,18 +94,18 @@ end
 
 local git_log_stdout_cache = {}
 local function openLogBuffer()
-  vim.cmd([[
-  edit git://log
-  normal! "_dd
-  setl nobuflisted
-  setl nomodifiable
-  setl nonumber norelativenumber
-  setl buftype=nofile
-  setl bufhidden=wipe
-  setf git-log
-  ]])
+  bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_set_option_value('filetype', 'git-log', { buf = bufnr })
+  vim.api.nvim_win_set_buf(0, bufnr)
+  vim.api.nvim_buf_set_name(bufnr, 'git://log')
+  vim.api.nvim_set_option_value('number', false, {win = 0})
+  vim.api.nvim_set_option_value('relativenumber', false, {win = 0})
 
-  bufnr = vim.api.nvim_get_current_buf()
   vim.api.nvim_create_autocmd('BufReadCmd', {
     buffer = bufnr,
     callback = function()
