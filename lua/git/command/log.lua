@@ -29,19 +29,28 @@ local function close_log_win()
 end
 
 local function openShowCommitBuffer()
-  vim.cmd([[
-  rightbelow vsplit git://show_commit
-  normal! "_dd
-  setl nobuflisted
-  setl nomodifiable
-  setl nonumber norelativenumber
-  setl buftype=nofile
-  setl bufhidden=wipe
-  setf git-diff
-  setl syntax=diff
-  nnoremap <buffer><silent> q :q<CR>
-  ]])
-  return vim.fn.bufnr()
+  local buf = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('buflisted', false, { buf = buf })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = buf })
+  vim.api.nvim_set_option_value('swapfile', false, { buf = buf })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = buf })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = buf })
+  vim.api.nvim_set_option_value('filetype', 'git-diff', { buf = buf })
+  vim.api.nvim_set_option_value('syntax', 'diff', { buf = buf })
+  vim.api.nvim_buf_set_name(buf, 'git://show_commit')
+  local w = vim.api.nvim_open_win(buf, true, {
+    split = 'right',
+  })
+  vim.api.nvim_buf_set_keymap(
+    buf,
+    'n',
+    'q',
+    ':q<CR>',
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_option_value('number', false, { win = w })
+  vim.api.nvim_set_option_value('relativenumber', false, { win = w })
+  return buf
 end
 
 local function on_show_stdout(id, data)
@@ -103,8 +112,8 @@ local function openLogBuffer()
   vim.api.nvim_set_option_value('filetype', 'git-log', { buf = bufnr })
   vim.api.nvim_win_set_buf(0, bufnr)
   vim.api.nvim_buf_set_name(bufnr, 'git://log')
-  vim.api.nvim_set_option_value('number', false, {win = 0})
-  vim.api.nvim_set_option_value('relativenumber', false, {win = 0})
+  vim.api.nvim_set_option_value('number', false, { win = 0 })
+  vim.api.nvim_set_option_value('relativenumber', false, { win = 0 })
 
   vim.api.nvim_create_autocmd('BufReadCmd', {
     buffer = bufnr,
