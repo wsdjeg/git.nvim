@@ -23,6 +23,7 @@ local function openStatusBuffer()
   local winid = vim.api.nvim_open_win(status_bufnr, true, {
     split = 'above',
     height = 10,
+    win = -1,
   })
   vim.api.nvim_set_option_value('buflisted', false, { buf = status_bufnr })
   vim.api.nvim_set_option_value('modifiable', false, { buf = status_bufnr })
