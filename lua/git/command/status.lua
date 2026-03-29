@@ -18,6 +18,7 @@ end
 
 local function openStatusBuffer()
   status_bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = status_bufnr })
   vim.api.nvim_buf_set_name(status_bufnr, 'git://status')
   vim.api.nvim_buf_set_lines(status_bufnr, 0, -1, false, {})
   local winid = vim.api.nvim_open_win(status_bufnr, true, {
