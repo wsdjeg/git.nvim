@@ -16,28 +16,32 @@ local util = require('git.util')
 
 local jobid = -1
 
-local config_bufid = -1
-
-local config_stdout = {}
-
 local function open_config_buf(len)
   if len > 10 then
     len = 10
   elseif len < 5 then
     len = 5
   end
-  vim.cmd(len .. 'split git://config')
-
-  vim.cmd([[
-    normal! "_dd
-    setl nobuflisted
-    setl nomodifiable
-    setl nonumber norelativenumber
-    setl buftype=nofile
-    setf git-config
-    nnoremap <buffer><silent> q :bd!<CR>
-  ]])
-  return vim.api.nvim_get_current_buf()
+  local bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://config')
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.api.nvim_open_win(bufnr, true, {
+    split = 'above',
+    height = len,
+    win = -1,
+  })
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_set_option_value('filetype', 'git-config', { buf = bufnr })
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
+    callback = function()
+      vim.cmd('bd!')
+    end,
+  })
+  return bufnr
 end
 
 local function on_stdout(id, data)

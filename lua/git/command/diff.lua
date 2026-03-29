@@ -41,18 +41,27 @@ local function open_diff_buffer()
   if vim.api.nvim_buf_is_valid(bufnr) then
     return bufnr
   end
-  vim.cmd([[
-    exe printf('%s git://diff', get(g:, 'git_diff_position', '10split'))
-    normal! "_dd
-    setl nobuflisted
-    setl nomodifiable
-    setl nonumber norelativenumber
-    setl buftype=nofile
-    setl bufhidden=wipe
-    setf git-diff
-    setl syntax=diff
-  ]])
-  bufnr = vim.fn.bufnr()
+  bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://diff')
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  local position = vim.g.git_diff_position or '10split'
+  if position:match('^[0-9]+split$') then
+    local height = tonumber(position:match('^[0-9]+'))
+    vim.api.nvim_open_win(bufnr, true, {
+      split = 'above',
+      height = height,
+      win = -1,
+    })
+  else
+    vim.api.nvim_set_current_buf(bufnr)
+  end
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_set_option_value('filetype', 'git-diff', { buf = bufnr })
+  vim.api.nvim_set_option_value('syntax', 'diff', { buf = bufnr })
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
     callback = close_diff_win,
   })
@@ -98,3 +107,4 @@ function M.run(argv)
 end
 
 return M
+

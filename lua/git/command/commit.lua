@@ -87,21 +87,28 @@ local function WinLeave()
     })
   end
 end
+
 local function openCommitBuffer()
-  vim.cmd([[
-  10split git://commit
-  normal! "_dd
-  setlocal nobuflisted
-  setlocal buftype=acwrite
-  setlocal bufhidden=wipe
-  setlocal noswapfile
-  setlocal modifiable
-  setf git-commit
-  set syntax=gitcommit
-  nnoremap <buffer><silent> q :bd!<CR>
-  let b:git_commit_quitpre = 0
-  ]])
-  local bufid = vim.fn.bufnr('%')
+  local bufid = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufid })
+  vim.api.nvim_buf_set_name(bufid, 'git://commit')
+  vim.api.nvim_buf_set_lines(bufid, 0, -1, false, {})
+  vim.api.nvim_open_win(bufid, true, {
+    split = 'above',
+    height = 10,
+    win = -1,
+  })
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufid })
+  vim.api.nvim_set_option_value('buftype', 'acwrite', { buf = bufid })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufid })
+  vim.api.nvim_set_option_value('modifiable', true, { buf = bufid })
+  vim.api.nvim_set_option_value('filetype', 'git-commit', { buf = bufid })
+  vim.api.nvim_buf_set_var(bufid, 'git_commit_quitpre', false)
+  vim.api.nvim_buf_set_keymap(bufid, 'n', 'q', '', {
+    callback = function()
+      vim.cmd('bd!')
+    end,
+  })
   local id =
     vim.api.nvim_create_augroup('git_commit_buffer', { clear = true })
   vim.api.nvim_create_autocmd({ 'BufWriteCmd' }, {
@@ -128,6 +135,7 @@ local function openCommitBuffer()
   })
   return bufid
 end
+
 local function on_exit(id, code, single)
   log.debug(string.format('code %d, single %d', code, single))
   if id ~= commit_jobid then
@@ -208,3 +216,4 @@ function M.run(argv)
 end
 
 return M
+

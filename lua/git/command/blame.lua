@@ -87,18 +87,21 @@ local function close_blame()
 end
 
 local function open_blame_win()
-  vim.cmd([[
-    tabedit git://blame
-    normal! "_dd
-    setl nobuflisted
-    setl nomodifiable
-    setl nonumber norelativenumber
-    setl buftype=nofile
-    setl scrollbind
-    setf git-blame
-    setlocal bufhidden=wipe
-  ]])
-  blame_buffer_nr = vim.api.nvim_get_current_buf()
+  local bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://blame')
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.api.nvim_open_win(bufnr, true, {
+    split = 'left',
+    win = -1,
+  })
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+  vim.api.nvim_set_option_value('scrollbind', true, { win = 0 })
+  vim.api.nvim_set_option_value('filetype', 'git-blame', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  blame_buffer_nr = bufnr
   vim.api.nvim_buf_set_keymap(blame_buffer_nr, 'n', '<Cr>', '', {
     callback = open_previous,
   })
@@ -126,17 +129,26 @@ local function generate_context(ls)
 end
 
 local function open_blame_show_win(fname)
-  vim.cmd('rightbelow vsplit git://blame:show/' .. fname)
-  vim.cmd([[
-  normal! "_dd
-  setl nobuflisted
-  setl nomodifiable
-  setl scrollbind
-  setl buftype=nofile
-  setlocal bufhidden=wipe
-  nnoremap <buffer><silent> q :bd!<CR>
-  ]])
-  return vim.api.nvim_get_current_buf()
+  local bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://blame:show/' .. fname)
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.api.nvim_open_win(bufnr, true, {
+    vertical = true,
+    split = 'right',
+    win = -1,
+  })
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('scrollbind', true, { win = 0 })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
+    callback = function()
+      vim.cmd('bd!')
+    end,
+  })
+  return bufnr
 end
 
 local function on_exit(_, code, single)
@@ -197,3 +209,4 @@ function M.run(argv)
 end
 
 return M
+

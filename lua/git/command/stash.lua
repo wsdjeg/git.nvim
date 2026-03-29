@@ -45,19 +45,22 @@ local function on_exit(id, code, signal)
   end
   log.debug(string.format('git-stash exit code %d, signal: %d', code, signal))
   if #show_lines > 0 and code == 0 and signal == 0 then
-    vim.cmd([[
-    edit git://blame
-    normal! "_dd
-    setl nobuflisted
-    setl nomodifiable
-    setl nonumber norelativenumber
-    setl buftype=nofile
-    setf git-diff
-    setl syntax=diff
-    nnoremap <buffer><silent> q :bd!<CR>
-    ]])
-    local bufnr = vim.fn.bufnr('%')
-
+    local bufnr = vim.api.nvim_create_buf(false, false)
+    vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+    vim.api.nvim_buf_set_name(bufnr, 'git://stash')
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+    vim.api.nvim_set_current_buf(bufnr)
+    vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+    vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+    vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+    vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+    vim.api.nvim_set_option_value('filetype', 'git-diff', { buf = bufnr })
+    vim.api.nvim_set_option_value('syntax', 'diff', { buf = bufnr })
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
+      callback = function()
+        vim.cmd('bd!')
+      end,
+    })
     util.update_buffer(bufnr, show_lines)
   end
 end
@@ -122,3 +125,4 @@ function M.complete(ArgLead, CmdLine, CursorPos)
 end
 
 return M
+

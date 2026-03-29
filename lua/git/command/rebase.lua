@@ -30,37 +30,53 @@ local function WinLeave()
     vim.fn.rpcnotify(rebase_nvim_channal, 'nvim_command', 'wq')
   end
 end
+
 local function open_rebase()
-  vim.cmd([[
-  10split git://rebase
-  normal! "_dd
-  setlocal nobuflisted
-  setlocal buftype=acwrite
-  setlocal bufhidden=wipe
-  setlocal noswapfile
-  setlocal modifiable
-  setf git-rebase
-  set syntax=gitrebase
-  nnoremap <buffer><silent> q :bd!<CR>
-  let b:git_commit_quitpre = 0
-  ]])
+  local bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://rebase')
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.api.nvim_open_win(bufnr, true, {
+    split = 'above',
+    height = 10,
+    win = -1,
+  })
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'acwrite', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
+  vim.api.nvim_set_option_value('filetype', 'git-rebase', { buf = bufnr })
+  vim.api.nvim_buf_set_var(bufnr, 'git_commit_quitpre', false)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
+    callback = function()
+      vim.cmd('bd!')
+    end,
+  })
 end
 
 local function open_commit()
-  vim.cmd([[
-  10split git://commit
-  normal! "_dd
-  setlocal nobuflisted
-  setlocal buftype=acwrite
-  setlocal bufhidden=wipe
-  setlocal noswapfile
-  setlocal modifiable
-  setf git-commit
-  set syntax=gitcommit
-  nnoremap <buffer><silent> q :bd!<CR>
-  let b:git_commit_quitpre = 0
-  ]])
+  local bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://commit')
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.api.nvim_open_win(bufnr, true, {
+    split = 'above',
+    height = 10,
+    win = -1,
+  })
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'acwrite', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
+  vim.api.nvim_set_option_value('filetype', 'git-commit', { buf = bufnr })
+  vim.api.nvim_buf_set_var(bufnr, 'git_commit_quitpre', false)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
+    callback = function()
+      vim.cmd('bd!')
+    end,
+  })
 end
+
 local function create_autocmd_return_bufnr()
   local bufid = vim.fn.bufnr('%')
   local id =
@@ -180,3 +196,4 @@ function m.complete(ArgLead, CmdLine, CursorPos)
 end
 
 return m
+

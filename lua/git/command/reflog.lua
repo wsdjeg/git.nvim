@@ -42,17 +42,17 @@ end
 
 local function open_reflog_buffer()
   local previous_buf = vim.api.nvim_get_current_buf()
-  vim.cmd('edit git://reflog')
-  vim.cmd([[
-    normal! "_dd
-    setl nobuflisted
-    setl nomodifiable
-    setl nonumber norelativenumber
-    setl buftype=nofile
-    setl bufhidden=wipe
-    setf git-reflog
-  ]])
-  vim.api.nvim_buf_set_keymap(vim.api.nvim_get_current_buf(), 'n', 'q', '', {
+  local bufnr = vim.api.nvim_create_buf(false, false)
+  vim.api.nvim_set_option_value('swapfile', false, { buf = bufnr })
+  vim.api.nvim_buf_set_name(bufnr, 'git://reflog')
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.api.nvim_set_current_buf(bufnr)
+  vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
+  vim.api.nvim_set_option_value('bufhidden', 'wipe', { buf = bufnr })
+  vim.api.nvim_set_option_value('filetype', 'git-reflog', { buf = bufnr })
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '', {
     callback = function()
       if vim.api.nvim_buf_is_valid(previous_buf) then
         vim.api.nvim_set_current_buf(previous_buf)
@@ -61,7 +61,7 @@ local function open_reflog_buffer()
       end
     end,
   })
-  return vim.api.nvim_get_current_buf()
+  return bufnr
 end
 
 local function on_exit(_, code, signal)
@@ -99,3 +99,4 @@ function M.run(argv)
 end
 
 return M
+
