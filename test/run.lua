@@ -3,11 +3,9 @@
 
 local lu = require('luaunit')
 
--- Add test directory to runtime path
-vim.opt.runtimepath:append('.')
-
--- Setup package.path to support test submodules
-package.path = 'test/?.lua;lua/?.lua;' .. package.path
+-- Use project root for file discovery (CWD may have changed to test git repo)
+local project_root = _G.PROJECT_ROOT or '.'
+local test_dir = project_root .. '/test'
 
 -- Get test files based on PATTERN parameter
 local function get_test_files()
@@ -17,7 +15,7 @@ local function get_test_files()
 
   if not pattern or pattern == '' then
     -- No PATTERN specified, run all tests
-    local files = vim.split(vim.fn.globpath('test', '**/*_spec.lua'), '\n')
+    local files = vim.split(vim.fn.globpath(test_dir, '**/*_spec.lua'), '\n')
     if files[#files] == '' then
       table.remove(files)
     end
@@ -29,26 +27,27 @@ local function get_test_files()
 
   -- Check if it's a full path
   if pattern:match('^test/') or pattern:match('^test\\') then
-    -- Full path provided
-    if vim.fn.filereadable(pattern) == 1 then
-      table.insert(files, pattern)
+    -- Full path provided (relative to project root)
+    local full_path = project_root .. '/' .. pattern
+    if vim.fn.filereadable(full_path) == 1 then
+      table.insert(files, full_path)
     else
-      print(string.format('[ERROR] Test file not found: %s', pattern))
+      print(string.format('[ERROR] Test file not found: %s', full_path))
       return {}
     end
   else
     -- Shorthand: search for matching files
     -- e.g., "util" -> test/**/*util*_spec.lua
-    files = vim.split(vim.fn.globpath('test', string.format('**/*%s*_spec.lua', pattern)), '\n')
+    files = vim.split(vim.fn.globpath(test_dir, string.format('**/*%s*_spec.lua', pattern)), '\n')
 
     -- Also try exact match: e.g., "util_spec.lua"
     if #files == 0 then
-      files = vim.split(vim.fn.globpath('test', string.format('%s*_spec.lua', pattern)), '\n')
+      files = vim.split(vim.fn.globpath(test_dir, string.format('%s*_spec.lua', pattern)), '\n')
     end
 
     -- Try with _spec.lua suffix
     if #files == 0 then
-      files = vim.split(vim.fn.globpath('test', string.format('**/%s_spec.lua', pattern)), '\n')
+      files = vim.split(vim.fn.globpath(test_dir, string.format('**/%s_spec.lua', pattern)), '\n')
     end
 
     -- Remove empty strings

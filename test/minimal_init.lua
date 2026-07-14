@@ -9,12 +9,20 @@ vim.opt.backup = false
 vim.opt.undofile = false
 vim.opt.verbose = 1
 
--- Set up package path for:
--- 1. lua/?.lua - Main plugin source code
--- 2. test/?.lua - Mock modules
+-- Save project root before any CWD changes
+local project_root = vim.fn.getcwd()
+_G.PROJECT_ROOT = project_root
+
+-- Set up package path with absolute paths so they work after CWD change
+-- 1. lua/?.lua and lua/?/init.lua - Main plugin source code
+-- 2. test/?.lua - Mock modules (job, notify)
 -- 3. test/.deps/?.lua - Test dependencies (luaunit)
-package.path = 'lua/?.lua;test/?.lua;test/.deps/?.lua;' .. package.path
-vim.opt.runtimepath:prepend('.')
+package.path = project_root .. '/lua/?.lua;'
+  .. project_root .. '/lua/?/init.lua;'
+  .. project_root .. '/test/?.lua;'
+  .. project_root .. '/test/.deps/?.lua;'
+  .. package.path
+vim.opt.runtimepath:prepend(project_root)
 
 -- Create temporary test directory
 local test_dir = vim.fn.tempname() .. '_git_nvim_test'
