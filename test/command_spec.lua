@@ -462,6 +462,66 @@ function TestCommand:test_remote_run_with_args()
 end
 
 -- =========================
+-- Command building: checkout
+-- =========================
+
+function TestCommand:test_checkout_run()
+  local checkout = require('git.command.checkout')
+  checkout.run({ 'main' })
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd, { 'git', 'checkout', 'main' })
+end
+
+function TestCommand:test_checkout_run_no_args()
+  local checkout = require('git.command.checkout')
+  checkout.run({})
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd, { 'git', 'checkout' })
+end
+
+-- =========================
+-- Command building: log
+-- =========================
+
+function TestCommand:test_log_run()
+  local log = require('git.command.log')
+  log.run({})
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd[1], 'git')
+  lu.assertEquals(last.cmd[2], 'log')
+  lu.assertTrue(vim.tbl_contains(last.cmd, '--graph'))
+  lu.assertTrue(vim.tbl_contains(last.cmd, '--date=relative'))
+end
+
+function TestCommand:test_log_run_with_args()
+  local log = require('git.command.log')
+  log.run({ '--oneline' })
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd[1], 'git')
+  lu.assertEquals(last.cmd[2], 'log')
+  lu.assertTrue(vim.tbl_contains(last.cmd, '--oneline'))
+end
+
+-- =========================
+-- Command building: status
+-- =========================
+
+function TestCommand:test_status_run()
+  local status = require('git.command.status')
+  status.run({})
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd[1], 'git')
+  lu.assertEquals(last.cmd[2], 'status')
+end
+
+function TestCommand:test_status_run_with_args()
+  local status = require('git.command.status')
+  status.run({ '-s' })
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd, { 'git', 'status', '-s' })
+end
+
+-- =========================
 -- Complete: fetch
 -- =========================
 
