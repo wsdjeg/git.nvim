@@ -1,15 +1,17 @@
 # git.nvim
 
-git.nvim is an asynchronous git command wrapper plugin for Neovim, using `:Git` command instead of blocking `:!git`.
-
+[![Run Tests](https://github.com/wsdjeg/git.nvim/actions/workflows/test.yml/badge.svg)](https://github.com/wsdjeg/git.nvim/actions/workflows/test.yml)
 [![GitHub License](https://img.shields.io/github/license/wsdjeg/git.nvim)](LICENSE)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/wsdjeg/git.nvim)](https://github.com/wsdjeg/git.nvim/issues)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/wsdjeg/git.nvim)](https://github.com/wsdjeg/git.nvim/commits/master/)
 [![GitHub Release](https://img.shields.io/github/v/release/wsdjeg/git.nvim)](https://github.com/wsdjeg/git.nvim/releases)
 [![luarocks](https://img.shields.io/luarocks/v/wsdjeg/git.nvim)](https://luarocks.org/modules/wsdjeg/git.nvim)
 
+![git-remote-ui](https://github.com/user-attachments/assets/68b683e8-e496-420f-80af-a22551de1613)
+
 <!-- vim-markdown-toc GFM -->
 
+- [📘 Intro](#-intro)
 - [✨ Features](#-features)
 - [📦 Installation](#-installation)
     - [Prerequisites](#prerequisites)
@@ -45,20 +47,24 @@ git.nvim is an asynchronous git command wrapper plugin for Neovim, using `:Git` 
 
 <!-- vim-markdown-toc -->
 
+## 📘 Intro
+
+`git.nvim` is an asynchronous git command wrapper plugin for Neovim, using `:Git` command instead of blocking `:!git`.
+
 ## ✨ Features
 
-- **Asynchronous Git Commands** — Run Git commands via `:Git` without blocking Neovim UI, powered by `job.nvim`
-- **Full Git Coverage** — Support for 26+ Git commands including status, add, commit, push/pull, fetch, diff, branch, log, reflog, rebase, stash, tag, cherry-pick, and more
-- **Interactive Branch Manager** — Visual branch list with key mappings for checkout, delete, view log, and diff operations
-- **Remote Repository Browser** — Side panel to browse remote repositories and their branches with fetch support
-- **Git Blame Integration** — Line-by-line blame view with history navigation (view previous versions)
-- **Git Log Viewer** — Commit history with graph visualization and commit details preview
-- **Picker.nvim Integration** — Fuzzy finder sources for branch switching (`git-branch`) and finding deleted files (`git-ghosts`)
-- **Statusline Integration** — Easy branch display with optional push/pull status indicators
-- **Command Completion** — Intelligent completion for Git commands, branches, remotes, and file paths
-- **Conflict Detection** — Automatic quickfix list for merge conflicts during pull
-- **Split Window Editing** — Commit messages, rebase todos, and merge messages open in split windows
-- **No Default Key Bindings** — Full control over your workflow without imposed mappings
+- **Asynchronous Git Commands** - Run Git commands via `:Git` without blocking Neovim UI, powered by `job.nvim`
+- **Full Git Coverage** - Support for 26+ Git commands including status, add, commit, push/pull, fetch, diff, branch, log, reflog, rebase, stash, tag, cherry-pick, and more
+- **Interactive Branch Manager** - Visual branch list with key mappings for checkout, delete, view log, and diff operations
+- **Remote Repository Browser** - Side panel to browse remote repositories and their branches with fetch support
+- **Git Blame Integration** - Line-by-line blame view with history navigation (view previous versions)
+- **Git Log Viewer** - Commit history with graph visualization and commit details preview
+- **Picker.nvim Integration** - Fuzzy finder sources for branch switching (`git-branch`) and finding deleted files (`git-ghosts`)
+- **Statusline Integration** - Easy branch display with optional push/pull status indicators
+- **Command Completion** - Intelligent completion for Git commands, branches, remotes, and file paths
+- **Conflict Detection** - Automatic quickfix list for merge conflicts during pull
+- **Split Window Editing** - Commit messages, rebase todos, and merge messages open in split windows
+- **No Default Key Bindings** - Full control over your workflow without imposed mappings
 
 ## 📦 Installation
 
@@ -128,11 +134,11 @@ luarocks install --server=https://luarocks.org/manifests/wsdjeg git.nvim
 
 Use `:Git` to execute git commands directly inside Neovim. The behavior is identical to the git command-line tool with these enhancements:
 
-- **Asynchronous execution** — No UI blocking
-- **Command completion** — Tab completion for commands and arguments
-- **Split window editing** — Commit messages and rebase todos open in splits
-- **Visual interfaces** — Branch manager, remote browser, log viewer, blame view
-- **No default key bindings** — Full control over your workflow
+- **Asynchronous execution** - No UI blocking
+- **Command completion** - Tab completion for commands and arguments
+- **Split window editing** - Commit messages and rebase todos open in splits
+- **Visual interfaces** - Branch manager, remote browser, log viewer, blame view
+- **No default key bindings** - Full control over your workflow
 
 ### Git Commands
 
@@ -288,8 +294,6 @@ Manage set of tracked repositories. Running `:Git remote` without arguments open
 | `f`         | Fetch remote under cursor                |
 | `o`         | Toggle remote branch list (expand/collapse) |
 | `?`         | Toggle help information                  |
-
-![git-remote-ui](https://github.com/user-attachments/assets/68b683e8-e496-420f-80af-a22551de1613)
 
 **Examples:**
 
@@ -450,10 +454,10 @@ return {
 
 **API Functions:**
 
-- `require('git.command.branch').current()` — Returns current branch name with optional prefix
-- `require('git.command.branch').detect()` — Force update branch name
-- `require('git.command.push').status()` — Returns push spinner status (requires utils.nvim)
-- `require('git.command.pull').status()` — Returns pull spinner status (requires utils.nvim)
+- `require('git.command.branch').current()` - Returns current branch name with optional prefix
+- `require('git.command.branch').detect()` - Force update branch name
+- `require('git.command.push').status()` - Returns push spinner status (requires utils.nvim)
+- `require('git.command.pull').status()` - Returns pull spinner status (requires utils.nvim)
 
 ![Statusline Example](https://github.com/user-attachments/assets/3ae8bc49-1e0a-40fb-b3f9-25cbd9fd956c)
 
@@ -463,7 +467,7 @@ git.nvim provides built-in picker sources for [picker.nvim](https://github.com/w
 
 ### Available Sources
 
-1. **`git-branch`** — Fuzzy find and checkout git branches
+1. **`git-branch`** - Fuzzy find and checkout git branches
 
    - Quick branch switching
    - Preview branch information
@@ -473,7 +477,7 @@ git.nvim provides built-in picker sources for [picker.nvim](https://github.com/w
    :Picker git-branch
    ```
 
-2. **`git-ghosts`** — Fuzzy find deleted files in repository history
+2. **`git-ghosts`** - Fuzzy find deleted files in repository history
 
    - Find files that were deleted
    - Useful for recovering lost work
@@ -497,12 +501,12 @@ vim.keymap.set('n', '<leader>gG', '<cmd>Picker git-ghosts<cr>', { silent = true 
 
 git.nvim focuses on being a **thin asynchronous wrapper** around Git commands, providing:
 
-- **Native Git command syntax** — No need to learn new commands, use standard Git commands
-- **Asynchronous execution** — Non-blocking UI powered by job.nvim
-- **Visual interfaces** — Branch manager, remote browser, log viewer, blame view
-- **Command completion** — Intelligent tab completion for commands, branches, remotes, and files
-- **Zero default key bindings** — You're in control of your workflow
-- **Lightweight** — Minimal dependencies and overhead
+- **Native Git command syntax** - No need to learn new commands, use standard Git commands
+- **Asynchronous execution** - Non-blocking UI powered by job.nvim
+- **Visual interfaces** - Branch manager, remote browser, log viewer, blame view
+- **Command completion** - Intelligent tab completion for commands, branches, remotes, and files
+- **Zero default key bindings** - You're in control of your workflow
+- **Lightweight** - Minimal dependencies and overhead
 
 ### Does it support all Git commands?
 
@@ -561,3 +565,4 @@ If you encounter any bugs or have suggestions, please file an issue in the [issu
 ## 📄 License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
+
