@@ -40,7 +40,9 @@ local function download(url, dest)
   return false
 end
 
-local deps_dir = 'test/.deps'
+-- Use project root since CWD may have changed to test git repo
+local project_root = _G.PROJECT_ROOT or '.'
+local deps_dir = project_root .. '/test/.deps'
 mkdir(deps_dir)
 
 -- Install luaunit
