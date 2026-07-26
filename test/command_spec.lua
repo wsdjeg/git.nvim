@@ -25,7 +25,8 @@ function TestCommand:test_all_modules_load()
     'add', 'blame', 'branch', 'checkout', 'cherry-pick', 'clean',
     'commit', 'config', 'diff', 'fetch', 'grep', 'log', 'merge',
     'mv', 'pull', 'push', 'rebase', 'reflog', 'remote', 'reset',
-    'rm', 'shortlog', 'show', 'stash', 'status', 'tag', 'update-index',
+    'restore', 'rm', 'shortlog', 'show', 'stash', 'status', 'tag',
+    'update-index',
   }
   for _, cmd in ipairs(commands) do
     local ok, mod = pcall(require, 'git.command.' .. cmd)
@@ -37,7 +38,7 @@ end
 function TestCommand:test_complete_functions_exist()
   local with_complete = {
     'add', 'branch', 'checkout', 'fetch', 'log',
-    'merge', 'push', 'rebase', 'reset', 'rm', 'stash', 'tag',
+    'merge', 'push', 'rebase', 'reset', 'restore', 'rm', 'stash', 'tag',
   }
   for _, cmd in ipairs(with_complete) do
     local mod = require('git.command.' .. cmd)
@@ -293,6 +294,40 @@ function TestCommand:test_reset_run_percent()
   lu.assertEquals(last.cmd[2], 'reset')
   lu.assertEquals(last.cmd[3], 'HEAD')
   lu.assertNotEquals(last.cmd[4], '%')
+end
+
+-- =========================
+-- Command building: restore
+-- =========================
+
+function TestCommand:test_restore_run()
+  local restore = require('git.command.restore')
+  restore.run({ 'file.txt' })
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd, { 'git', 'restore', 'file.txt' })
+end
+
+function TestCommand:test_restore_run_staged()
+  local restore = require('git.command.restore')
+  restore.run({ '--staged', 'file.txt' })
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd, { 'git', 'restore', '--staged', 'file.txt' })
+end
+
+function TestCommand:test_restore_run_percent()
+  local restore = require('git.command.restore')
+  restore.run({ '%' })
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd[1], 'git')
+  lu.assertEquals(last.cmd[2], 'restore')
+  lu.assertNotEquals(last.cmd[3], '%')
+end
+
+function TestCommand:test_restore_run_no_args()
+  local restore = require('git.command.restore')
+  restore.run({})
+  local last = self.job.get_last_call()
+  lu.assertEquals(last.cmd, { 'git', 'restore' })
 end
 
 -- =========================
@@ -640,7 +675,7 @@ function TestCommand:test_push_complete_options()
 end
 
 -- =========================
--- Complete: add / reset / rm
+-- Complete: add / reset / restore / rm
 -- =========================
 
 function TestCommand:test_add_complete_includes_percent()
@@ -653,6 +688,12 @@ end
 function TestCommand:test_reset_complete_returns_files()
   local reset = require('git.command.reset')
   local result = reset.complete('R', 'Git reset R', 11)
+  lu.assertNotNil(result)
+end
+
+function TestCommand:test_restore_complete_returns_files()
+  local restore = require('git.command.restore')
+  local result = restore.complete('R', 'Git restore R', 14)
   lu.assertNotNil(result)
 end
 

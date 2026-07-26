@@ -21,6 +21,7 @@ local cmds = {
   'push',
   'remote',
   'reset',
+  'restore',
   'rm',
   'reflog',
   'shortlog',
